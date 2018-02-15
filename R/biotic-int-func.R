@@ -1,7 +1,7 @@
 ## Functions for evaluating fitnesses of partners
 biotic_sel <- function(x, diff, sp, pars){
 
-    if (pars$type == "match"){
+    if (pars$type == "match"){ #something buggy here, always is 0
         w  <- fitness_f_match(diff, sp, pars)
     } else {
         w <- fitness_f_diff(diff, sp, pars)
@@ -11,7 +11,7 @@ biotic_sel <- function(x, diff, sp, pars){
 
 ## Matching fitness
 fitness_f_match <- function(diff, sp, pars){
-    if (pars$int[sp] == "cost"){
+    if (pars$int[sp] == "cost"){ #something buggy here, always is 0
        w <- -pars$zeta[sp] * exp(-pars$alpha[sp] * diff^2)
     } else {
        w <-  pars$zeta[sp] * exp(-pars$alpha[sp] * diff^2)
@@ -21,7 +21,7 @@ fitness_f_match <- function(diff, sp, pars){
 
 ## Difference fitness
 fitness_f_diff <- function(diff, sp, pars){
-    if (pars$int[sp] == "cost"){
+    if (pars$int[sp] == "cost"){ #something buggy here, always is 0
         w <- -pars$zeta[sp] / (1 + pars$alpha[sp] * diff^2)
     } else {
         w <- pars$zeta[sp] / (1 + pars$alpha[sp] * diff^2)
@@ -30,7 +30,8 @@ fitness_f_diff <- function(diff, sp, pars){
 
 
 ## Match up individuals
-get_partners <- function(i,j){
+get_partners <- function(i,j){ #this only works if i and j are the same length, fix!
+                               #unless i and j are not lists? then how do we do this for every pop?
     min_n <- min(length(i), length(j))
     ind_sp_i <- sample(seq_len(length(i)), min_n)
     ind_sp_j <- sample(seq_len(length(j)), min_n) 
