@@ -2,11 +2,12 @@
 ## N.B. Need to add correlation structure among optimum
 get_parameters <- function(f){
     N <- f$N()
-    K <- round(f$K(2))
-    gamma <- f$gamma(2)
-    alpha <- f$alpha(2)
-    zeta <- f$zeta(2)
-    m <- f$m(2)
+    K <- round(f$K(2)) #if you change 2 to N, there are 48 NA's, but keeping it at 2
+                        #returns one carrying value for i and one for j, they dont vary
+    gamma <- f$gamma(2) #this should also vary for each indidivual
+    alpha <- f$alpha(2) #this should also vary for each indidivual
+    zeta <- f$zeta(2) #this should also vary for each indidivual
+    m <- f$m(2) #this should also vary for each indidivual
     names(m) <- names(zeta) <- names(alpha) <- names(gamma) <- names(K) <- c("i", "j")
     theta_i <- f$theta(N)
     theta_j <- f$theta(N)
@@ -34,9 +35,9 @@ yoder_defaults <- function(){
 
 ## Build starting values
 get_starting_pop <- function(pars){
-    mi <- lapply(c(1:pars$N), function(x) {rnorm(pars$K["i"],
+    mi <- lapply(c(1:pars$N), function(x) {rnorm(pars$K["i"], #this value needs to vary
                                                  pars$theta_i[x], 0.05)})
-    mj <- lapply(c(1:pars$N), function(x) {rnorm(pars$K["j"],
+    mj <- lapply(c(1:pars$N), function(x) {rnorm(pars$K["j"], #this value needs to vary
                                                  pars$theta_j[x], 0.05)})
     list(meta_i=mi, meta_j=mj)
 }
