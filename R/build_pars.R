@@ -1,20 +1,28 @@
 ## Functions for drawing values
 ## N.B. Need to add correlation structure among optimum
+
+#by separating the values for i and j, it should fix the problem
+#of having the same carrying capacity per species for all 50 populations 
 get_parameters <- function(f){
     N <- f$N()
-    K <- round(f$K(2)) #if you change 2 to N, there are 48 NA's, but keeping it at 2
-                        #returns one carrying value for i and one for j, they dont vary
-    gamma <- f$gamma(2) #this should also vary for each indidivual
-    alpha <- f$alpha(2) #this should also vary for each indidivual
-    zeta <- f$zeta(2) #this should also vary for each indidivual
-    m <- f$m(2) #this should also vary for each indidivual
-    names(m) <- names(zeta) <- names(alpha) <- names(gamma) <- names(K) <- c("i", "j")
+    K_i <- round(f$K(N))
+    K_j <- round(f$K(N))
+    gamma_i <- f$gamma(N) #this is one value per pop not ind
+    gamma_j <- f$gamma(N) 
+    alpha_i <- f$alpha(N) #this is one value per pop not ind
+    alpha_j <- f$alpha(N) 
+    zeta_i <- f$zeta(N) #this is one value per pop not ind
+    zeta_j <- f$zeta(N) 
+    m_i <- f$m(N) #this is one value per pop not ind
+    m_j <- f$m(N)
+    #names(m) <- names(zeta) <- names(alpha) <- names(gamma) <- names(K) <- c("i", "j")
     theta_i <- f$theta(N)
     theta_j <- f$theta(N)
     v_s <- f$v_s()
 
-    list(N=N, K=K, gamma=gamma, alpha=alpha, zeta=zeta, m=m,
-         theta_i=theta_i, theta_j=theta_j, v_s=v_s)
+    list(N=N, K_i=K_i, K_j=K_j, gamma_i=gamma_i, gamma_j=gamma_j, 
+         alpha_i=alpha_i, alpha_j=alpha_j, zeta_i=zeta_i, zeta_j=zeta_j,
+         m_i=m_i, m_j=m_j, theta_i=theta_i, theta_j=theta_j, v_s=v_s)
 }
 
 
@@ -35,9 +43,9 @@ yoder_defaults <- function(){
 
 ## Build starting values
 get_starting_pop <- function(pars){
-    mi <- lapply(c(1:pars$N), function(x) {rnorm(pars$K["i"], #this value needs to vary
+    mi <- lapply(c(1:pars$N), function(x) {rnorm(pars$K_i[x],
                                                  pars$theta_i[x], 0.05)})
-    mj <- lapply(c(1:pars$N), function(x) {rnorm(pars$K["j"], #this value needs to vary
+    mj <- lapply(c(1:pars$N), function(x) {rnorm(pars$K_j[x], 
                                                  pars$theta_j[x], 0.05)})
     list(meta_i=mi, meta_j=mj)
 }
