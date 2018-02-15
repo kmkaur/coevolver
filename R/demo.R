@@ -1,14 +1,17 @@
 ## Function for mating and reproduction
-mate_repro <- function(x, k, v_s)
+#this seems to work well so far!
+mate_repro <- function(x, k, v_s) 
     lapply(x, function(y) mate_repro_k(y, k, v_s))
 
-mate_repro_k <- function(x, k, v_s)
+mate_repro_k <- function(x, k, v_s) 
     sapply(c(1:k), function(y) {
         mean(sample(x, size=2, replace=TRUE)) + rnorm(1, sd=v_s)})
 
 
 ## Function for movement between sites
-migrate_m <- function(x, km){
+#this seems to work well so far!
+#km = K*m
+migrate_m <- function(x, km){ 
     ## migrant pool
     pool <- sapply(x, function(y) y[c(1:km)])
     ## distribute among metapopulations
@@ -23,9 +26,10 @@ migrate_m <- function(x, km){
 
 ## Function for abiotic selection
 ## N.B.: We ignore the possibility of local extinction
-abiotic_sel <- function(x, theta, gamma){
+#this seems to work well so far!
+abiotic_sel <- function(x, theta, gamma){ 
     w <- lapply(seq_len(length(x)), function(y)
-                fitness_f(x[[y]], theta[y], gamma))
+                 fitness_f(x[[y]], theta[y], gamma))
     get_survivors(x, w)
 }
 
