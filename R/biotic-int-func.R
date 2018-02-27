@@ -30,8 +30,7 @@ fitness_f_diff <- function(diff, sp, pars){
 
 
 ## Match up individuals
-get_partners <- function(i,j){ #this only works if i and j are the same length, fix!
-                               #unless i and j are not lists? then how do we do this for every pop?
+get_partners <- function(i,j){ 
     min_n <- min(length(i), length(j))
     ind_sp_i <- sample(seq_len(length(i)), min_n)
     ind_sp_j <- sample(seq_len(length(j)), min_n) 
@@ -51,8 +50,8 @@ get_partners <- function(i,j){ #this only works if i and j are the same length, 
         rem_j <- NA
     }
       
-    list(part=part, ind_sp_i=ind_sp_i, ind_sp_j=ind_sp_j,
-         rem_i=rem_i, rem_j=rem_j)
+    list(part = part, ind_sp_i=ind_sp_i, ind_sp_j=ind_sp_j,
+         rem_i=rem_i, rem_j=rem_j) #fixing part, it now shows up
 }
 
 
