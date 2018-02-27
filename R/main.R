@@ -3,16 +3,16 @@
 coev_div_single_gen <- function(meta_i, meta_j, pars){
     
     ## Mating and reproduction
-    newgen_i <- mate_repro(meta_i, pars$K["i"], pars$v_s)
-    newgen_j <- mate_repro(meta_j, pars$K["j"], pars$v_s)
+    newgen_i <- mate_repro(pops$meta_i, pars$K_i, pars$v_s) #this works for the first pop only
+    newgen_j <- mate_repro(pops$meta_j, pars$K_j, pars$v_s)
 
     ## Movement between sites
-    remix_i <- migrate_m(newgen_i, round(pars$m["i"]*pars$K["i"]))
-    remix_j <- migrate_m(newgen_j, round(pars$m["j"]*pars$K["j"]))
+    remix_i <- migrate_m(newgen_i, round(pars$m_i*pars$K_i))
+    remix_j <- migrate_m(newgen_j, round(pars$m_j*pars$K_j))
 
     ## Abiotic selection
-    post_sel_i <- abiotic_sel(remix_i, pars$theta_i, pars$gamma["i"])
-    post_sel_j <- abiotic_sel(remix_j, pars$theta_j, pars$gamma["i"])
+    post_sel_i <- abiotic_sel(remix_i, pars$theta_i, pars$gamma_i)
+    post_sel_j <- abiotic_sel(remix_j, pars$theta_j, pars$gamma_j)
 
     ## Biotic selection (depends on form)
     ## Match individuals
