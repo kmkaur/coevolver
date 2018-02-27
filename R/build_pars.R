@@ -7,16 +7,16 @@ get_parameters <- function(f){
     N <- f$N()
     K_i <- round(f$K(N))
     K_j <- round(f$K(N))
-    gamma_i <- f$gamma(N) #this is one value per pop not ind
+    gamma_i <- f$gamma(N) 
     gamma_j <- f$gamma(N) 
-    alpha_i <- f$alpha(N) #this is one value per pop not ind
+    alpha_i <- f$alpha(N) 
     alpha_j <- f$alpha(N) 
-    zeta_i <- f$zeta(N) #this is one value per pop not ind
+    zeta_i <- f$zeta(N)
     zeta_j <- f$zeta(N) 
-    m_i <- f$m(N) #this is one value per pop not ind
+    m_i <- f$m(N) #this should be one value per ind not pop?
     m_j <- f$m(N)
     #names(m) <- names(zeta) <- names(alpha) <- names(gamma) <- names(K) <- c("i", "j")
-    theta_i <- f$theta(N)
+    theta_i <- f$theta(N) 
     theta_j <- f$theta(N)
     v_s <- f$v_s()
 
@@ -42,6 +42,7 @@ yoder_defaults <- function(){
 }
 
 ## Build starting values
+#this works correctly now
 get_starting_pop <- function(pars){
     mi <- lapply(c(1:pars$N), function(x) {rnorm(pars$K_i[x],
                                                  pars$theta_i[x], 0.05)})
