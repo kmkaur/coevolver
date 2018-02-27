@@ -13,7 +13,7 @@ get_parameters <- function(f){
     alpha_j <- f$alpha(N) 
     zeta_i <- f$zeta(N)
     zeta_j <- f$zeta(N) 
-    m_i <- f$m(N) #this should be one value per ind not pop?
+    m_i <- f$m(N) 
     m_j <- f$m(N)
     #names(m) <- names(zeta) <- names(alpha) <- names(gamma) <- names(K) <- c("i", "j")
     theta_i <- f$theta(N) 
@@ -41,6 +41,19 @@ yoder_defaults <- function(){
          theta=theta, v_s=v_s)
 }
 
+test_parameters <- function(){
+  N <- function() 10
+  K <- function(n) runif(n, 2, 5)
+  gamma <- function(n) runif(n, 0.005, 1)
+  alpha <- function(n) runif(n, 1,10)
+  zeta <- function(n) runif(n, 0.01, 5)
+  m <- function(n) runif(n, 0, 0.1)
+  theta <- function(n) rnorm(n, runif(1, 0.4, 0.6), runif(1, 0, 1))
+  v_s <- function() 0.01
+  list(N=N, K=K, gamma=gamma, alpha=alpha, zeta=zeta, m=m,
+       theta=theta, v_s=v_s)
+}
+
 ## Build starting values
 #this works correctly now
 get_starting_pop <- function(pars){
@@ -50,3 +63,4 @@ get_starting_pop <- function(pars){
                                                  pars$theta_j[x], 0.05)})
     list(meta_i=mi, meta_j=mj)
 }
+
