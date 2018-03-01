@@ -1,38 +1,42 @@
 ## Functions for evaluating fitnesses of partners
 #I have started to re do this function
-#biotic_sel <- function(x, diff, sp, pars){
+biotic_sel <- function(x, diff, sp, pars){
 
- #   if (pars$type == "match"){ #something buggy here, always is 0
- #        w  <- fitness_f_match(diff, sp, pars)
- #    } else {
- #        w <- fitness_f_diff(diff, sp, pars)
- #    }
-#    get_survivors(x, w)
-#}
+    if (pars$type == "match"){ #something buggy here, always is 0
+         w  <- fitness_f_match(diff, sp, pars)
+     } else {
+         w <- fitness_f_diff(diff, sp, pars)
+     }
+    get_survivors(x, w)
+}
 
 ## Matching fitness
 #I have started to re do this function
-#fitness_f_match <- function(diff, sp, pars){
-#    if (pars$int[sp] == "cost"){ #something buggy here, always is 0
-#       w <- -pars$zeta[sp] * exp(-pars$alpha[sp] * diff^2)
-#    } else {
-#       w <-  pars$zeta[sp] * exp(-pars$alpha[sp] * diff^2)
-#    }
-#    w
-#}
+fitness_f_match <- function(diff, sp, pars){
+    if (pars$int[sp] == "cost"){ #something buggy here, always is 0
+       w <- -pars$zeta[sp] * exp(-pars$alpha[sp] * diff^2)
+    } else {
+       w <-  pars$zeta[sp] * exp(-pars$alpha[sp] * diff^2)
+    }
+    w
+}
 
 ## Difference fitness
 #I have started to re do this function
-#fitness_f_diff <- function(diff, sp, pars){
-#    if (pars$int[sp] == "cost"){ #something buggy here, always is 0
-#        w <- -pars$zeta[sp] / (1 + pars$alpha[sp] * diff^2)
-#    } else {
-#        w <- pars$zeta[sp] / (1 + pars$alpha[sp] * diff^2)
-#    }
-#}
+fitness_f_diff <- function(diff, sp, pars){
+    if (pars$int[sp] == "cost"){ #something buggy here, always is 0
+        w <- -pars$zeta[sp] / (1 + pars$alpha[sp] * diff^2)
+    } else {
+        w <- pars$zeta[sp] / (1 + pars$alpha[sp] * diff^2)
+    }
+}
+
+####################
 
 #fitness_f_match <- function(diff, sp, pars){ 
-#decide what goes into the function
+#pars = pars, stays the same
+#diff = diff, stays the same
+#what would sp be?
 fit_match <- list()
 w1 <- list()
 for(i in 1:50){
@@ -58,14 +62,15 @@ for(i in 1:50){
   fit_diff[[i]] <- diff_1
   #if (pars$int[sp] == "cost"){ 
   #define what pars$int is, currently NULL
-  w <- -pars$zeta_i[i] / (1 + pars$alpha_i[i] * fit_match[[i]][1:length_part]^2)
+  w <- -pars$zeta_i[i] / (1 + pars$alpha_i[i] * fit_diff[[i]][1:length_part]^2)
   #} else {
-  w <- pars$zeta_i[i] / (1 + pars$alpha_i[i] * fit_match[[i]][1:length_part]^2)
+  w <- pars$zeta_i[i] / (1 + pars$alpha_i[i] * fit_diff[[i]][1:length_part]^2)
   w2[[i]] <- w
 }
 #}
 
 ## Match up individuals
+#this works now
 get_partners <- function(i,j){ 
     min_n <- min(length(i), length(j))
     ind_sp_i <- sample(seq_len(length(i)), min_n)

@@ -102,7 +102,7 @@ for(i in 1:50){
  #}
   
 #biotic_sel <- function(x, diff, sp, pars){
-#      if (pars$type == "match"){ #something buggy here, always is 0
+#      if (pars$type == "match"){ #something buggy here, always is 0, define pars$type
 #       w  <- fitness_f_match(diff, sp, pars)
 #      } else {
 #        w <- fitness_f_diff(diff, sp, pars)
