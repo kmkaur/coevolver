@@ -1,6 +1,6 @@
 
-test_pars = get_parameters(yoder_defaults())
-trial_pops = get_starting_pop(pars=test_pars)
+test_pars <- get_parameters(yoder_defaults())
+trial_pops <- get_starting_pop(pars=test_pars)
 
 meta_i <- trial_pops$meta_i
 meta_j <- trial_pops$meta_j
