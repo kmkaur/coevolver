@@ -1,22 +1,21 @@
 
-test_pars <- get_parameters(yoder_defaults())
-trial_pops <- get_starting_pop(pars=test_pars)
+trial_pops <- build_starting_pop(pars=yoder_defaults())
 
-meta_i <- trial_pops$meta_i
-meta_j <- trial_pops$meta_j
+meta_i <- trial_pops$pops$meta_i
+meta_j <- trial_pops$pops$meta_j
 
 ######mating and reproduction#####
 newgen_i <- list()
 for(i in 1:50){
   
-  trial_pop_mr <- mate_repro(meta_i[i], test_pars$K_i[i], test_pars$v_s)
+  trial_pop_mr <- mate_repro(meta_i[i], trial_pops$pars$K_i[i], trial_pops$pars$v_s)
   newgen_i[i] <- trial_pop_mr
 }
 
 newgen_j <- list()
 for(i in 1:50){
   
-  trial_pop_mr <- mate_repro(meta_j[i], test_pars$K_j[i], test_pars$v_s)
+  trial_pop_mr <- mate_repro(meta_j[i], trial_pops$pars$K_j[i], trial_pops$pars$v_s)
   newgen_j[i] <- trial_pop_mr
 }
 
@@ -24,25 +23,25 @@ for(i in 1:50){
 remix_i <- list()
 for(i in 1:50){
   
-  remix_i <- migrate_m(newgen_i, round(test_pars$m_i[i]*test_pars$K_i[i]))
+  remix_i <- migrate_m(newgen_i, round(trial_pops$pars$m_i[i]*trial_pops$pars$K_i[i]))
 }
 
 remix_j <- list()
 for(i in 1:50){
   
-  remix_j <- migrate_m(newgen_j, round(test_pars$m_j[i]*test_pars$K_j[i]))
+  remix_j <- migrate_m(newgen_j, round(trial_pops$pars$m_j[i]*trial_pops$pars$K_j[i]))
 } 
 
 #####abiotic sel#####
 post_sel_i <- list()
 for(i in 1:50){
-  post_sel <- abiotic_sel(remix_i[i], test_pars$theta_i[i], test_pars$gamma_i[i])
+  post_sel <- abiotic_sel(remix_i[i], trial_pops$pars$theta_i[i], trial_pops$pars$gamma_i[i])
   post_sel_i[i] <- post_sel
 }
 
 post_sel_j <- list()
 for(i in 1:50){
-  post_sel <- abiotic_sel(remix_j[i], test_pars$theta_j[i], test_pars$gamma_j[i])
+  post_sel <- abiotic_sel(remix_j[i], trial_pops$pars$theta_j[i], trial_pops$pars$gamma_j[i])
   post_sel_j[i] <- post_sel
 }
 
@@ -58,6 +57,10 @@ for(i in 1:50){
 }
 
 #####biotic selection#####
+
+n <- min(length(meta_i[[1]]), length(meta_j[[1]]))
+sample(meta_i[[1]], n, replace = FALSE)
+sample(meta_j[[1]], n, replace = FALSE)
 
 #first fix the fitness_f_match fxn:
   #change zeta to zeta_i[a] and alpha to alpha_i[a] and 'a' needs to go from 1:50
