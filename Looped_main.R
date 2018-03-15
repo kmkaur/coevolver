@@ -57,16 +57,16 @@ for(i in 1:50){
 }
 
 #####fitness matching#####
-fit_match <- list()
+fit_diff <- list()
 w1 <- list()
 for(i in 1:50){
   length_part <- nrow(partners[[i]]$part)
   diff_1 <- diff[[i]][1:length_part]
-  fit_match[[i]] <- diff_1}
+  fit_diff[[i]] <- diff_1}
 
 fitness_matching_output <- list()
 for(i in 1:50){
-  fitness_matching_out <- fitness_f_match(test_pars$zeta_i[i], test_pars$alpha_i[i], fit_match[[i]])
+  fitness_matching_out <- fitness_f_match(test_pars$zeta_i[i], test_pars$alpha_i[i], fit_diff[[i]])
   fitness_matching_output[[i]] <- fitness_matching_out
 }
 

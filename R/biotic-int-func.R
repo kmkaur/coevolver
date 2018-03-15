@@ -27,11 +27,11 @@ get_partners <- function(i,j){
 
 ## Function for fitness matching
 #need to figure out cost vs benefit
-fitness_f_match <- function(zeta, alpha, fit_match){ 
+fitness_f_match <- function(zeta, alpha, fit_diff){ 
   #if (interaction == "cost"){
-  w <- -zeta * exp(-alpha * fit_match^2)
+  w <- -zeta * exp(-alpha * fit_diff^2)
   #} else {
-  w <- zeta * exp(-alpha * fit_match^2)
+  w <- zeta * exp(-alpha * fit_diff^2)
   out <- list(w)
 }
 
@@ -47,13 +47,13 @@ fitness_f_diff <- function(zeta, alpha, fit_diff){
 
 ## Functions for evaluating fitnesses of partners
 #I have started to re do this function
-biotic_sel <- function(x, diff, sp, pars){
+biotic_sel <- function(x, zeta, alpha, fit_diff){
 
-    if (pars$type == "match"){ #something buggy here, always is 0
-         w  <- fitness_f_match(diff, sp, pars)
-     } else {
-         w <- fitness_f_diff(diff, sp, pars)
-     }
+    #if (pars$type == "match"){
+         w  <- fitness_f_match(zeta, alpha, dit_diff)
+    # } else {
+         w <- fitness_f_diff(zeta, alpha, fit_diff)
+     #}
     get_survivors(x, w)
 }
 
