@@ -56,66 +56,57 @@ for(i in 1:50){
   diff[[i]] <- d
 }
 
-#####biotic selection#####
+#####fitness matching#####
+fit_match <- list()
+w1 <- list()
+for(i in 1:50){
+  length_part <- nrow(partners[[i]]$part)
+  diff_1 <- diff[[i]][1:length_part]
+  fit_match[[i]] <- diff_1}
 
-n <- min(length(meta_i[[1]]), length(meta_j[[1]]))
-sample(meta_i[[1]], n, replace = FALSE)
-sample(meta_j[[1]], n, replace = FALSE)
+fitness_matching_output <- list()
+for(i in 1:50){
+  fitness_matching_out <- fitness_f_match(test_pars$zeta_i[i], test_pars$alpha_i[i], fit_match[[i]])
+  fitness_matching_output[[i]] <- fitness_matching_out
+}
 
-#first fix the fitness_f_match fxn:
-  #change zeta to zeta_i[a] and alpha to alpha_i[a] and 'a' needs to go from 1:50
-  #change diff to diff[[a]] and 'a' needs to go from 1:50
-  #length of partners[[a]]$part is nrow(partners[[a]]$part)
-  #define length_part <- nrow(partners[[a]]$part)
-  #diff[[a]][b] 'b' needs to go from 1:length_part in partners[[a]]$part
-  #so overall, diff[[a]][1:length_part], a goes from 1:50
+#####fitness differences#####
+fit_diff <- list()
+w1 <- list()
+for(i in 1:50){
+  length_part <- nrow(partners[[i]]$part)
+  diff_1 <- diff[[i]][1:length_part]
+  fit_diff[[i]] <- diff_1}
 
-#fitness_f_match <- function(diff, sp, pars){ 
-    #decide what goes into the function
-    fit_match <- list()
-    w1 <- list()
-  for(i in 1:50){
-    length_part <- nrow(partners[[i]]$part)
-    diff_1 <- diff[[i]][1:length_part]
-    fit_match[[i]] <- diff_1
-    #if (pars$int[sp] == "cost"){
-        #define what pars$int is, currently NULL
-    w <- -test_pars$zeta_i[i] * exp(-test_pars$alpha_i[i] * fit_match[[i]][1:length_part]^2)
-    #} else {
-    w <- test_pars$zeta_i[i] * exp(-test_pars$alpha_i[i] * fit_match[[i]][1:length_part]^2)
-    w1[[i]] <- w
-  }
-#}  
+fitness_diff_output <- list()
+for(i in 1:50){
+  fitness_diff_out <- fitness_f_match(test_pars$zeta_i[i], test_pars$alpha_i[i], fit_diff[[i]])
+  fitness_diff_output[[i]] <- fitness_diff_out
+}
   
-#fitness_f_diff <- function(diff, sp, pars){
-    #decide what goes into the function
-    fit_diff <- list()
-    w2 <- list()
-  for(i in 1:50){
-    length_part <- nrow(partners[[i]]$part)
-    diff_1 <- diff[[i]][1:length_part]
-    fit_diff[[i]] <- diff_1
-    #if (pars$int[sp] == "cost"){ 
-     #define what pars$int is, currently NULL
-    w <- -test_pars$zeta_i[i] / (1 + test_pars$alpha_i[i] * fit_match[[i]][1:length_part]^2)
-    #} else {
-    w <- test_pars$zeta_i[i] / (1 + test_pars$alpha_i[i] * fit_match[[i]][1:length_part]^2)
-    w2[[i]] <- w
-  }
- #}
-  
-#biotic_sel <- function(x, diff, sp, pars){
+#biotic_sel <- function(zeta, alpha, fit_match, fit_diff){
 #      if (pars$type == "match"){ #something buggy here, always is 0, define pars$type
-#       w  <- fitness_f_match(diff, sp, pars)
+#       w  <- fitness_f_match(zeta, alpha, fit_match)
 #      } else {
-#        w <- fitness_f_diff(diff, sp, pars)
+#       w <- fitness_f_diff(zeta, alpha, fit_diff)
 #      }
 #      get_survivors(x, w)
+      
 #    }
 
 #####add remainders#####
-    #need to define a function first
+    #get remainders that survived from partners and add them here
 
+
+
+#####alternate way of getting partners and difference#####
+#not looped yet
+#currently not using this version
+n <- min(length(meta_i[[1]]), length(meta_j[[1]]))
+partner_i <- sample(meta_i[[1]], n, replace = FALSE)
+partner_j <- sample(meta_j[[1]], n, replace = FALSE)
+partners_list <- cbind.data.frame(partner_i, partner_j)
+difference <- partners_list$partner_i-partners_list$partner_j
 
 
     
