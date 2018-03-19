@@ -42,8 +42,11 @@ for(i in 1:50){
 }
 
 #####match individuals#####
-partners <- lapply(seq_len(length(meta_i)), function(x)
-  get_partners(post_sel_i[[x]], post_sel_j[[x]]))
+partners <- list()
+for(i in 1:50){
+  gp <- get_partners(post_sel_i[[i]], post_sel_j[[i]])
+  partners[[i]] <- gp
+}
 
 #####differences in trait values#####
 diff <- list()
