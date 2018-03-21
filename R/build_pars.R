@@ -1,6 +1,17 @@
 ## Functions for drawing values
 ## N.B. Need to add correlation structure among optimum
-
+library(MASS)
+set.seed(123)
+N <- 50
+mean <- c(runif(1, 0.4, 0.6), runif(1, 0.4, 0.6))
+var <- runif(1, 0, 1)
+sigma1 <- runif(1, -.1, .1)
+sigma2 <- runif(1, -.1, .1)
+sigma <- matrix(c(sigma1^2, sigma1*sigma2*var, sigma1*sigma2*var, sigma2^2),2)
+theta <- mvrnorm(n=N, mu=mean, Sigma=sigma, empirical = FALSE)
+theta_i_cor <- theta[,1]
+theta_j_cor <- theta[,2]
+                     
 #by separating the values for i and j, it should fix the problem
 #of having the same carrying capacity per species for all 50 populations 
 get_parameters <- function(f){
@@ -16,8 +27,8 @@ get_parameters <- function(f){
     m_i <- f$m(N) 
     m_j <- f$m(N)
     #names(m) <- names(zeta) <- names(alpha) <- names(gamma) <- names(K) <- c("i", "j")
-    theta_i <- f$theta(N) 
-    theta_j <- f$theta(N)
+    theta_i <- f$theta[,1] 
+    theta_j <- f$theta[,2]
     v_s <- f$v_s()
 
     list(N=N, K_i=K_i, K_j=K_j, gamma_i=gamma_i, gamma_j=gamma_j, 
@@ -35,7 +46,10 @@ yoder_defaults <- function(){
     alpha <- function(n) runif(n, 1,10)
     zeta <- function(n) runif(n, 0.01, 5)
     m <- function(n) runif(n, 0, 0.1)
-    theta <- function(n) rnorm(n, runif(1, 0.4, 0.6), runif(1, 0, 1))
+    #theta <- function(n) rnorm(n, runif(1, 0.4, 0.6), runif(1, 0, 1))
+    mu <- c(runif(1, 0.4, 0.6), runif(1, 0.4, 0.6))
+    sigma <- matrix(runif(50,-0.1,1)*runif(50,0,1), nrow=2, ncol = 2)
+    theta <- mvrnorm(n=50, mu, sigma, empirical = FALSE)
     v_s <- function() 0.01
     list(N=N, K=K, gamma=gamma, alpha=alpha, zeta=zeta, m=m,
          theta=theta, v_s=v_s)
