@@ -20,13 +20,15 @@ for(i in 1:50){
 #####migration#####
 remix_i <- list()
 for(i in 1:50){
-  remix_i <- migrate_m(newgen_i, round(trial_pops$pars$m_i[i]*trial_pops$pars$K_i[i]))
+  remix <- migrate_m(newgen_i[i], newgen_i[[i]], round(trial_pops$pars$m_i[i]*trial_pops$pars$K_i[i]))
+  remix_i[[i]] <- remix
 }
 
 remix_j <- list()
 for(i in 1:50){
-  remix_j <- migrate_m(newgen_j, round(trial_pops$pars$m_j[i]*trial_pops$pars$K_j[i]))
-} 
+  remix <- migrate_m(newgen_j[i], newgen_i[[i]], round(trial_pops$pars$m_j[i]*trial_pops$pars$K_j[i]))
+  remix_j[[i]] <- remix
+}
 
 #####abiotic sel#####
 post_sel_i <- list()
