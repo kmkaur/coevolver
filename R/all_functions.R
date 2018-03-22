@@ -91,19 +91,24 @@ mate_repro_k <- function(x, k, v_s)
 #####Function for migration#####
 #note that km = K*m
 
-migrate_m <- function(x, km){ 
+migrate_m <- function(x, z, km){ 
   ## migrant pool
-  pool <- sapply(x, function(y) y[c(1:km)])
+  #pool <- sapply(x, function(y) y[c(1:km)])
+  pool <- list()
+  for(i in 1:50){
+    p <- sapply(x, function(y) y[c(1:km)])
+    pool[[i]] <- p
+  }
+  pool <- unlist(pool)
   ## distribute among metapopulations
-  for (i in 1:length(x)){
-    mkk <- sample(seq_len(length(pool)), size=km)
-    x[[i]][c(1:km)] <- pool[mkk]
+  for (i in 1:length(z)){
+    mkk <- sample(length(pool), size=km, replace = TRUE)
+    #z[c(1:km)] <- pool[mkk]
     pool <- pool[-mkk]
   }
-  x
+  z
 }
-
-
+    
 #####Function for abiotic selection#####
 ## Note: We ignore the possibility of local extinction
 abiotic_sel <- function(x, theta, gamma){ 
