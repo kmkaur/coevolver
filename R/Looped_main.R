@@ -113,6 +113,7 @@ for(i in 1:50){
 }
 
 ###survivors and remainders###
+#here as an example I have used a matching costly interaction
 surv_m_c_i <- list()
 for(i in 1:50){
   survivors <- get_survivors(post_sel_i[i], fit_match_cost_i[[i]])
@@ -125,14 +126,8 @@ for(i in 1:50){
   surv_m_c_j[[i]] <- survivors
 }
 
-surv_m_b_i
-surv_m_b_j
-surv_d_c_i
-surv_d_c_j
-surv_d_b_i
-surv_d_b_j
-
 #####add remainders#####
+#here as an example I have used a matching costly interaction
 post_bio_i <- list()
 for(i in 1:50){
 post_bio <- c(unlist(surv_m_c_i[[i]]), partners[[i]]$rem_i)
