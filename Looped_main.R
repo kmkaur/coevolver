@@ -78,13 +78,13 @@ for(i in 1:50){
 fit_match_ben_i <- list()
 for(i in 1:50){
   fitness_matching_ben <- fitness_f_match_ben(test_pars$zeta_i[i], test_pars$alpha_i[i], fit_diff[[i]])
-  fit_match_cost_i[[i]] <- fitness_matching_ben
+  fit_match_ben_i[[i]] <- fitness_matching_ben
 }
 
 fit_match_ben_j <- list()
 for(i in 1:50){
   fitness_matching_ben <- fitness_f_match_ben(test_pars$zeta_j[i], test_pars$alpha_j[i], fit_diff[[i]])
-  fit_match_cost_j[[i]] <- fitness_matching_ben
+  fit_match_ben_j[[i]] <- fitness_matching_ben
 }
 
 #####fitness differences#####
@@ -146,17 +146,3 @@ for(i in 1:50){
 }
     
 i_and_j <- list(post_bio_i, post_bio_j)
-
-#####alternate way of getting partners and difference#####
-#not looped yet
-#currently not using this version
-n <- min(length(meta_i[[1]]), length(meta_j[[1]]))
-partner_i <- sample(meta_i[[1]], n, replace = FALSE)
-partner_j <- sample(meta_j[[1]], n, replace = FALSE)
-partners_list <- cbind.data.frame(partner_i, partner_j)
-difference <- partners_list$partner_i-partners_list$partner_j
-
-
-    
-   
-
