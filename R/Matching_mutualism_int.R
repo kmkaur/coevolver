@@ -4,7 +4,7 @@ ptm <- proc.time()
 trial_pops <- build_starting_pop(pars=yoder_defaults())
 meta_i <- trial_pops$pops$meta_i
 meta_j <- trial_pops$pops$meta_j
-proc.time()-ptm #0.003
+proc.time()-ptm #0.017
 
 ######mating and reproduction#####
 ptm <- proc.time()
@@ -19,7 +19,7 @@ for(i in 1:50){
   trial_pop_mr <- mate_repro(meta_j[i], trial_pops$pars$K_j[i], trial_pops$pars$v_s)
   newgen_j[i] <- trial_pop_mr
 }
-proc.time()-ptm #0.047
+proc.time()-ptm #0.080
 
 #####migration#####
 
@@ -32,10 +32,10 @@ for(i in 1:50){
 
 remix_j <- list()
 for(i in 1:50){
-  remix <- migrate_m(newgen_j[i], newgen_i[[i]], round(trial_pops$pars$m_j[i]*trial_pops$pars$K_j[i]))
+  remix <- migrate_m(newgen_j[i], newgen_j[[i]], round(trial_pops$pars$m_j[i]*trial_pops$pars$K_j[i]))
   remix_j[[i]] <- remix
 }
-proc.time()-ptm #0.052
+proc.time()-ptm #0.086
 
 #####abiotic sel#####
 
@@ -51,7 +51,7 @@ for(i in 1:50){
   post_sel <- abiotic_sel(remix_j[i], trial_pops$pars$theta_j[i], trial_pops$pars$gamma_j[i])
   post_sel_j[i] <- post_sel
 }
-proc.time()-ptm #0.002
+proc.time()-ptm #0.011
 
 #####match individuals#####
 
@@ -61,7 +61,7 @@ for(i in 1:50){
   gp <- get_partners(post_sel_i[[i]], post_sel_j[[i]])
   partners[[i]] <- gp
 }
-proc.time()-ptm #0.001
+proc.time()-ptm #0.005
 
 #####differences in trait values#####
 
@@ -71,7 +71,7 @@ for(i in 1:50){
   d <- partners[[i]]$part$sp_i-partners[[i]]$part$sp_j
   diff[[i]] <- d
 }
-proc.time()-ptm #0.001
+proc.time()-ptm #0.006
 
 #####fitness matching#####
 
@@ -94,7 +94,7 @@ for(i in 1:50){
   fitness_matching_ben <- fitness_f_match_ben(test_pars$zeta_j[i], test_pars$alpha_j[i], fit_diff[[i]])
   fit_match_ben_j[[i]] <- fitness_matching_ben
 }
-proc.time()-ptm #0.002
+proc.time()-ptm #0.020
 
 ###survivors and remainders###
 
@@ -110,7 +110,7 @@ for(i in 1:50){
   survivors <- get_survivors(post_sel_j[i], fit_match_ben_j[[i]])
   surv_match_ben_j[[i]] <- survivors
 }
-proc.time()-ptm #0.002
+proc.time()-ptm #0.014
 
 #####add remainders#####
 
@@ -126,6 +126,7 @@ for(i in 1:50){
   post_bio <- c(unlist(surv_match_ben_j[[i]]), partners[[i]]$rem_j)
   post_bio_j[[i]] <- post_bio[!is.na(post_bio)]
 }
-proc.time()-ptm #0.001
+proc.time()-ptm #0.012
 
 i_and_j <- list(post_bio_i, post_bio_j)
+
