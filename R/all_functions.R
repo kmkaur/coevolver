@@ -93,7 +93,7 @@ mate_repro_k <- function(x, k, v_s)
 
 migrate_m <- function(x, z, km){ 
   ## migrant pool
-  #pool <- sapply(x, function(y) y[c(1:km)])
+  pool <- sapply(x, function(y) y[c(1:km)])
   pool <- list()
   for(i in 1:50){
     p <- sapply(x, function(y) y[c(1:km)])
