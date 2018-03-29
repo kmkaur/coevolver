@@ -36,7 +36,7 @@ yoder_defaults <- function(){
   gamma <- function(n) runif(n, 0.005, 1)
   alpha <- function(n) runif(n, 1,10)
   zeta <- function(n) runif(n, 0.01, 5)
-  m <- function(n) runif(n, 0, 0.1)
+  m <- function(n) runif(n, 0, 0.01)
   mean <- c(runif(1, 0.4, 0.6), runif(1, 0.4, 0.6))
   var <- runif(1, 0, 1)
   sigma1 <- runif(1, -.1, .1)
@@ -94,7 +94,7 @@ mate_repro_k <- function(x, k, v_s)
 migrate_m <- function(x, z, km){
   pool <- sapply(x, function(y) y[c(1:km)])
   mkk <- sample(seq_len(length(pool)), size=km)
-  z[c(1:round(km))] <- pool[mkk]
+  z[c(1:km)] <- pool[mkk]
   z
 }
     
