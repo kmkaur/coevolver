@@ -94,7 +94,7 @@ mate_repro_k <- function(x, k, v_s)
 migrate_m <- function(x, z, km){
   pool <- sapply(x, function(y) y[c(1:km)])
   mkk <- sample(seq_len(length(pool)), size=km)
-  z[c(1:round(km))] <- pool[mkk]
+  z[c(1:km)] <- pool[mkk]
   z
 }
     
