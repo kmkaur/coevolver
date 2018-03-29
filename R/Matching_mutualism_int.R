@@ -2,6 +2,7 @@
 
 ptm <- proc.time()
 trial_pops <- build_starting_pop(pars=yoder_defaults())
+pars <- trial_pops$pars
 meta_i <- trial_pops$pops$meta_i
 meta_j <- trial_pops$pops$meta_j
 proc.time()-ptm 
@@ -10,13 +11,13 @@ proc.time()-ptm
 ptm <- proc.time()
 newgen_i <- list()
 for(i in 1:50){
-  trial_pop_mr <- mate_repro(meta_i[i], trial_pops$pars$K_i[i], trial_pops$pars$v_s)
+  trial_pop_mr <- mate_repro(meta_i[i], pars$K_i[i], pars$v_s)
   newgen_i[i] <- trial_pop_mr
 }
 
 newgen_j <- list()
 for(i in 1:50){
-  trial_pop_mr <- mate_repro(meta_j[i], trial_pops$pars$K_j[i], trial_pops$pars$v_s)
+  trial_pop_mr <- mate_repro(meta_j[i], pars$K_j[i], pars$v_s)
   newgen_j[i] <- trial_pop_mr
 }
 proc.time()-ptm 
@@ -26,13 +27,13 @@ proc.time()-ptm
 ptm <- proc.time()
 remix_i <- list()
 for(i in 1:50){
-  remix <- migrate_m(newgen_i[i], newgen_i[[i]], round(trial_pops$pars$m_i[i]*trial_pops$pars$K_i[i]))
+  remix <- migrate_m(newgen_i[i], newgen_i[[i]], round(pars$m_i[i]*pars$K_i[i]))
   remix_i[[i]] <- remix
 }
 
 remix_j <- list()
 for(i in 1:50){
-  remix <- migrate_m(newgen_j[i], newgen_j[[i]], round(trial_pops$pars$m_j[i]*trial_pops$pars$K_j[i]))
+  remix <- migrate_m(newgen_j[i], newgen_j[[i]], round(pars$m_j[i]*pars$K_j[i]))
   remix_j[[i]] <- remix
 }
 proc.time()-ptm 
@@ -42,13 +43,13 @@ proc.time()-ptm
 ptm <- proc.time()
 post_sel_i <- list()
 for(i in 1:50){
-  post_sel <- abiotic_sel(remix_i[i], trial_pops$pars$theta_i[i], trial_pops$pars$gamma_i[i])
+  post_sel <- abiotic_sel(remix_i[i], pars$theta_i[i], pars$gamma_i[i])
   post_sel_i[i] <- post_sel
 }
 
 post_sel_j <- list()
 for(i in 1:50){
-  post_sel <- abiotic_sel(remix_j[i], trial_pops$pars$theta_j[i], trial_pops$pars$gamma_j[i])
+  post_sel <- abiotic_sel(remix_j[i], pars$theta_j[i], pars$gamma_j[i])
   post_sel_j[i] <- post_sel
 }
 proc.time()-ptm 
@@ -85,13 +86,13 @@ for(i in 1:50){
 
 fit_match_ben_i <- list()
 for(i in 1:50){
-  fitness_matching_ben <- fitness_f_match_ben(test_pars$zeta_i[i], test_pars$alpha_i[i], fit_diff[[i]])
+  fitness_matching_ben <- fitness_f_match_ben(pars$zeta_i[i], pars$alpha_i[i], fit_diff[[i]])
   fit_match_ben_i[[i]] <- fitness_matching_ben
 }
 
 fit_match_ben_j <- list()
 for(i in 1:50){
-  fitness_matching_ben <- fitness_f_match_ben(test_pars$zeta_j[i], test_pars$alpha_j[i], fit_diff[[i]])
+  fitness_matching_ben <- fitness_f_match_ben(pars$zeta_j[i], pars$alpha_j[i], fit_diff[[i]])
   fit_match_ben_j[[i]] <- fitness_matching_ben
 }
 proc.time()-ptm 
