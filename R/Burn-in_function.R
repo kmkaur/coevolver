@@ -24,13 +24,13 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
       pars$alpha_j[1] <- alpha_j[k]
       pars$gamma_i[1] <- gamma_i[k]
       pars$gamma_j[1] <- gamma_j[k]
-  }}
+  }
 
       out <- coev_div_single_gen(meta_i, meta_j, pars)
-      meta_i <- out$bio_sel_i
-      meta_j <- out$bio_sel_j
+      meta_i <- out$pop_i
+      meta_j <- out$pop_j
     }
-  }
+  
   
   res_i <- c(0, sapply(meta_i, mean))
   res_j <- c(0, sapply(meta_j, mean))
