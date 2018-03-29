@@ -131,6 +131,6 @@ for(i in 1:50){
 }
 proc.time()-ptm
 
-list(post_bio_i, post_bio_j)
+list(pop_i = post_bio_i, pop_j = post_bio_j)
 
 }
