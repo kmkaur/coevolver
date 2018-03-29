@@ -129,5 +129,5 @@ for(i in 1:50){
 }
 proc.time()-ptm
 
-i_and_j <- list(post_bio_i, post_bio_j)
+list(post_bio_i, post_bio_j)
 
