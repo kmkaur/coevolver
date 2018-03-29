@@ -1,29 +1,31 @@
 #####Function for simulating across multiple generations#####
 #STILL working on this one!
+trial_pops <- build_starting_pop(pars=yoder_defaults())
+pars <- trial_pops$pars
+meta_i <- trial_pops$pops$meta_i
+meta_j <- trial_pops$pops$meta_j
 
 coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
-  
-  trial_pops <- build_starting_pop(pars=yoder_defaults())
-  
-  pars <- trial_pops$pars
-  meta_i <- trial_pops$pops$meta_i
-  meta_j <- trial_pops$pops$meta_j
   
   ## Burnin -- ramp up selection pressures over time
   if (burnin){
     n.gen <- n.gen - burnin.gen
     
-    alpha_i <- seq(0, pars$alpha_i[i], by=pars$alpha_i[i]/(burnin.gen-1))
-    alpha_j <- seq(0, pars$alpha_j[i], by=pars$alpha_j[i]/(burnin.gen-1))
-    gamma_i <- seq(0, pars$gamma_i[i], pars$gamma_i[i]/(burnin.gen-1))
-    gamma_j <- seq(0, pars$gamma_j[i], pars$gamma_j[i]/(burnin.gen-1))
+    #abiotic selection
+    alpha_i <- seq(0, pars$alpha_i[1], by=pars$alpha_i[1]/(burnin.gen-1))
+    alpha_j <- seq(0, pars$alpha_j[1], by=pars$alpha_j[1]/(burnin.gen-1))
+    
+    #biotic selection
+    gamma_i <- seq(0, pars$gamma_i[1], by=pars$gamma_i[1]/(burnin.gen-1))
+    gamma_j <- seq(0, pars$gamma_j[1], by=pars$gamma_j[1]/(burnin.gen-1))
     
     for (k in seq_len(burnin.gen)){
-      pars$alpha_i[i] <- alpha_i[k]
-      pars$alpha_j[i] <- alpha_j[k]
-      pars$gamma_i[i] <- gamma_i[k]
-      pars$gamma_j[i] <- gamma_j[k]
-      
+      pars$alpha_i[1] <- alpha_i[k]
+      pars$alpha_j[1] <- alpha_j[k]
+      pars$gamma_i[1] <- gamma_i[k]
+      pars$gamma_j[1] <- gamma_j[k]
+  }}
+
       out <- coev_div_single_gen(meta_i, meta_j, pars)
       meta_i <- out$bio_sel_i
       meta_j <- out$bio_sel_j
