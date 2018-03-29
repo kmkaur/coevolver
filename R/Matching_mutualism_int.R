@@ -8,6 +8,8 @@ meta_j <- trial_pops$pops$meta_j
 proc.time()-ptm 
 
 ######mating and reproduction#####
+coev_div_single_gen <- function(meta_i, meta_j, pars){
+
 ptm <- proc.time()
 newgen_i <- list()
 for(i in 1:50){
@@ -131,3 +133,4 @@ proc.time()-ptm
 
 list(post_bio_i, post_bio_j)
 
+}
