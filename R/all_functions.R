@@ -91,21 +91,17 @@ mate_repro_k <- function(x, k, v_s)
 #####Function for migration#####
 #note that km = K*m
 
-migrate_m <- function(x, z, km){ 
-  ## migrant pool
-  pool <- sapply(x, function(y) y[c(1:km)])
-  pool <- list()
-  for(i in 1:50){
-    p <- sapply(x, function(y) y[c(1:km)])
-    pool[[i]] <- p
-  }
-  pool <- unlist(pool)
-  ## distribute among metapopulations
-  for (i in 1:length(z)){
-    mkk <- sample(length(pool), size=km, replace = TRUE)
-    #z[c(1:km)] <- pool[mkk]
-    pool <- pool[-mkk]
-  }
+#practice
+#migrate_m <- function(newgen_i[1], newgen_i[[1]], round(trial_pops$pars$K_i*trial_pops$pars$m_i)){
+#  pool <- sapply(newgen_i[1], function(y) y[c(1:round(trial_pops$pars$K_i[1]*trial_pops$pars$m_i[1]))])
+#  mkk <- sample(seq_len(length(pool)), size=round(trial_pops$pars$K_i[1]*trial_pops$pars$m_i[1]))
+#  newgen_i[[1]][c(1:round(trial_pops$pars$K_i[1]*trial_pops$pars$m_i[1]))] <- pool[mkk]
+#}
+
+migrate_m <- function(x, z, km){
+  pool <- sapply(x, function(y) y[c(1:round(km))])
+  mkk <- sample(seq_len(length(pool)), size=round(km))
+  z[c(1:round(km))] <- pool[mkk]
   z
 }
     
