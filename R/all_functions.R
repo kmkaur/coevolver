@@ -91,13 +91,6 @@ mate_repro_k <- function(x, k, v_s)
 #####Function for migration#####
 #note that km = K*m
 
-#practice
-#migrate_m <- function(newgen_i[1], newgen_i[[1]], round(trial_pops$pars$K_i*trial_pops$pars$m_i)){
-#  pool <- sapply(newgen_i[1], function(y) y[c(1:round(trial_pops$pars$K_i[1]*trial_pops$pars$m_i[1]))])
-#  mkk <- sample(seq_len(length(pool)), size=round(trial_pops$pars$K_i[1]*trial_pops$pars$m_i[1]))
-#  newgen_i[[1]][c(1:round(trial_pops$pars$K_i[1]*trial_pops$pars$m_i[1]))] <- pool[mkk]
-#}
-
 migrate_m <- function(x, z, km){
   pool <- sapply(x, function(y) y[c(1:round(km))])
   mkk <- sample(seq_len(length(pool)), size=round(km))
