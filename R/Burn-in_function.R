@@ -19,18 +19,16 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
     gamma_i <- seq(0, pars$gamma_i[1], by=pars$gamma_i[1]/(burnin.gen-1))
     gamma_j <- seq(0, pars$gamma_j[1], by=pars$gamma_j[1]/(burnin.gen-1))
     
-    for (k in seq_len(burnin.gen)){
-      pars$alpha_i[1] <- alpha_i[k]
-      pars$alpha_j[1] <- alpha_j[k]
-      pars$gamma_i[1] <- gamma_i[k]
-      pars$gamma_j[1] <- gamma_j[k]
-  }
-
+    for (i in 1:burnin.gen){
+      pars <- alphai[i]
       out <- coev_div_single_gen(meta_i, meta_j, pars)
       meta_i <- out$pop_i
       meta_j <- out$pop_j
     }
+    
+  }  
   
+  for (j in 1:n.gen)
   
   res_i <- c(0, sapply(meta_i, mean))
   res_j <- c(0, sapply(meta_j, mean))
