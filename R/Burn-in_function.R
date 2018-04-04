@@ -15,21 +15,21 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
     #abiotic selection
     alpha_i <- list()
     for(i in 1:50){
-    alpha <- seq(0, pars$alpha_i[i], by=pars$alpha_i[i]/(burnin.gen-1))
-    alpha_i[[i]] <- alpha
+      alpha <- seq(0, pars$alpha_i[i], by=pars$alpha_i[i]/(burnin.gen-1))
+      alpha_i[[i]] <- alpha
     }
     
     alpha_j <- list()
     for(i in 1:50){
-    alpha <- seq(0, pars$alpha_j[i], by=pars$alpha_j[i]/(burnin.gen-1))
-    alpha_j[[i]] <- alpha
+      alpha <- seq(0, pars$alpha_j[i], by=pars$alpha_j[i]/(burnin.gen-1))
+      alpha_j[[i]] <- alpha
     }
     
     #biotic selection
     gamma_i <- list()
     for(i in 1:50){
-    gamma <- seq(0, pars$gamma_i[i], by=pars$gamma_i[i]/(burnin.gen-1))
-    gamma_i[[i]] <- gamma
+      gamma <- seq(0, pars$gamma_i[i], by=pars$gamma_i[i]/(burnin.gen-1))
+      gamma_i[[i]] <- gamma
     }
     
     gamma_j <- list()
@@ -38,14 +38,15 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
     gamma_j[[i]] <- gamma
     }
     
+    #replace the pars with the new pars
+    for (i in 1:50){
+      pars$alpha_i[[i]] <- alpha_i[i]
+      pars$alpha_j[[i]] <- alpha_j[i]
+      pars$gamma_i[[i]] <- gamma_i[i]
+      pars$gamma_j[[i]] <- gamma_j[i]
+    }
+    
     for (i in 1:burnin.gen){
-      #replace the pars with the new pars
-      for (i in 1:50){
-        pars$alpha_i[[i]] <- alpha_i[i]
-        pars$alpha_j[[i]] <- alpha_j[i]
-        pars$gamma_i[[i]] <- gamma_i[i]
-        pars$gamma_j[[i]] <- gamma_j[i]
-      }
       out <- coev_div_single_gen(meta_i, meta_j, pars)
       meta_i <- out$pop_i
       meta_j <- out$pop_j
