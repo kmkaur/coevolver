@@ -16,32 +16,32 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
     
     #abiotic selection
     alpha_i <- list()
-    for(i in 1:50){
+    for(i in 1:pars$N){
       alpha <- seq(0, pars$alpha_i[i], by=pars$alpha_i[i]/(burnin.gen-1))
       alpha_i[[i]] <- alpha
     }
     
     alpha_j <- list()
-    for(i in 1:50){
+    for(i in 1:pars$N){
       alpha <- seq(0, pars$alpha_j[i], by=pars$alpha_j[i]/(burnin.gen-1))
       alpha_j[[i]] <- alpha
     }
     
     #biotic selection
     gamma_i <- list()
-    for(i in 1:50){
+    for(i in 1:pars$N){
       gamma <- seq(0, pars$gamma_i[i], by=pars$gamma_i[i]/(burnin.gen-1))
       gamma_i[[i]] <- gamma
     }
     
     gamma_j <- list()
-    for(i in 1:50){
+    for(i in 1:pars$N){
     gamma <- seq(0, pars$gamma_j[i], by=pars$gamma_j[i]/(burnin.gen-1))
     gamma_j[[i]] <- gamma
     }
     
     #replace the pars with the new pars
-    for (i in 1:50){
+    for (i in 1:pars$N){
       pars$alpha_i[i] <- alpha_i[i]
       pars$alpha_j[i] <- alpha_j[i]
       pars$gamma_i[i] <- gamma_i[i]
