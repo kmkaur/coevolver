@@ -4,6 +4,9 @@
 #build starting pars
 trial_pops <- build_starting_pop(pars=yoder_defaults())
 pars <- trial_pops$pars
+meta_i <- trial_pops$pops$meta_i
+meta_j <- trial_pops$pops$meta_j
+out <- coev_div_single_gen(meta_i, meta_j, pars)
 
 coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
   
@@ -45,8 +48,8 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
       pars$gamma_j[i] <- gamma_j[i]
     }
     
-    #this is where I get stuck, the coev.div.single.gen doesnt
-    #work with the new pars, might have to update the fxns
+    ##this is where I get stuck, the coev.div.single.gen doesnt
+    #work with the new pars, might have to update the fxns##
     for (i in 1:burnin.gen){
       out <- coev_div_single_gen(meta_i, meta_j, pars)
       meta_i <- out$pop_i
@@ -55,6 +58,8 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
   }
   
   for (j in 1:n.gen){
+  #need to define j
+  #need to find the mean of each population under each generation?
   res_i <- c(0, sapply(meta_i, mean))
   res_j <- c(0, sapply(meta_j, mean))
   res   <- rbind(res_i, res_j)
@@ -63,9 +68,10 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
   }
   
   for (i in seq_len(n.gen)){
+  #need to define i
     out <- coev_div_single_gen(meta_i, meta_j, pars)
-    meta_i <- out$bio_sel_i
-    meta_j <- out$bio_sel_j
+    meta_i <- out$pop_i
+    meta_j <- out$pop_j
     res_i <- c(i, sapply(meta_i, mean))
     res_j <- c(i, sapply(meta_j, mean))
   }
