@@ -1,10 +1,9 @@
 #####Function for simulating across multiple generations#####
 #STILL working on this one!
+
+#build starting pars
 trial_pops <- build_starting_pop(pars=yoder_defaults())
 pars <- trial_pops$pars
-meta_i <- trial_pops$pops$meta_i
-meta_j <- trial_pops$pops$meta_j
-out <- coev_div_single_gen(meta_i, meta_j, pars)
 
 coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
   
@@ -40,12 +39,14 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
     
     #replace the pars with the new pars
     for (i in 1:50){
-      pars$alpha_i[[i]] <- alpha_i[i]
-      pars$alpha_j[[i]] <- alpha_j[i]
-      pars$gamma_i[[i]] <- gamma_i[i]
-      pars$gamma_j[[i]] <- gamma_j[i]
+      pars$alpha_i[i] <- alpha_i[i]
+      pars$alpha_j[i] <- alpha_j[i]
+      pars$gamma_i[i] <- gamma_i[i]
+      pars$gamma_j[i] <- gamma_j[i]
     }
     
+    #this is where I get stuck, the coev.div.single.gen doesnt
+    #work with the new pars, might have to update the fxns
     for (i in 1:burnin.gen){
       out <- coev_div_single_gen(meta_i, meta_j, pars)
       meta_i <- out$pop_i
