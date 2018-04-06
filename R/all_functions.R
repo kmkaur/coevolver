@@ -49,6 +49,25 @@ yoder_defaults <- function(){
        theta=theta, v_s=v_s)
 }
 
+yoder_2_pop <- function(){
+  N <- function() 2
+  K <- function(n) runif(n, 300, 2000)
+  gamma <- function(n) runif(n, 0.005, 1)
+  alpha <- function(n) runif(n, 1,10)
+  zeta <- function(n) runif(n, 0.01, 5)
+  m <- function(n) runif(n, 0, 0.01)
+  mean <- c(runif(1, 0.4, 0.6), runif(1, 0.4, 0.6))
+  var <- runif(1, 0, 1)
+  sigma1 <- runif(1, -.1, .1)
+  sigma2 <- runif(1, -.1, .1)
+  sigma <- matrix(c(sigma1^2, sigma1*sigma2*var, sigma1*sigma2*var, sigma2^2),2)
+  #sigma gives correlation structure to theta
+  theta <- function(n) mvrnorm(n, mu=mean, Sigma=sigma, empirical = FALSE)
+  v_s <- function() 0.01
+  list(N=N, K=K, gamma=gamma, alpha=alpha, zeta=zeta, m=m,
+       theta=theta, v_s=v_s)
+}
+
 
 #####Build starting populations#####
 get_starting_pop <- function(pars){
