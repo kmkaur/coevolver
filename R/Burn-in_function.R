@@ -2,7 +2,7 @@
 #STILL working on this one!
 
 #build starting pars
-trial_pops <- build_starting_pop(pars=yoder_defaults())
+trial_pops <- build_starting_pop(pars=yoder_2_pop())
 pars <- trial_pops$pars
 meta_i <- trial_pops$pops$meta_i
 meta_j <- trial_pops$pops$meta_j
@@ -14,43 +14,27 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
   if (burnin){
     n.gen <- n.gen - burnin.gen
     
-    #abiotic selection
-    alpha_i <- list()
-    for(i in 1:pars$N){
-      alpha <- seq(0, pars$alpha_i[i], by=pars$alpha_i[i]/(burnin.gen-1))
-      alpha_i[[i]] <- alpha
+    alpha_i_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
+    alpha_j_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
+    gamma_i_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
+    gamma_j_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
+    
+    
+    for (m in 1:pars$N){
+        alpha_i_burn[m,] <- seq(0, pars$alpha_i[m], by=pars$alpha_i[m]/(burnin.gen-1))
+        alpha_j_burn[m,] <- seq(0, pars$alpha_j[m], by=pars$alpha_j[m]/(burnin.gen-1))
+        gamma_i_burn[m,] <- seq(0, pars$gamma_i[m], by=pars$gamma_i[m]/(burnin.gen-1))
+        gamma_j_burn[m,] <- seq(0, pars$gamma_j[m], by=pars$gamma_j[m]/(burnin.gen-1))
     }
     
-    alpha_j <- list()
-    for(i in 1:pars$N){
-      alpha <- seq(0, pars$alpha_j[i], by=pars$alpha_j[i]/(burnin.gen-1))
-      alpha_j[[i]] <- alpha
-    }
-    
-    #biotic selection
-    gamma_i <- list()
-    for(i in 1:pars$N){
-      gamma <- seq(0, pars$gamma_i[i], by=pars$gamma_i[i]/(burnin.gen-1))
-      gamma_i[[i]] <- gamma
-    }
-    
-    gamma_j <- list()
-    for(i in 1:pars$N){
-    gamma <- seq(0, pars$gamma_j[i], by=pars$gamma_j[i]/(burnin.gen-1))
-    gamma_j[[i]] <- gamma
-    }
-    
-    #replace the pars with the new pars
-    for (i in 1:pars$N){
-      pars$alpha_i[i] <- alpha_i[i]
-      pars$alpha_j[i] <- alpha_j[i]
-      pars$gamma_i[i] <- gamma_i[i]
-      pars$gamma_j[i] <- gamma_j[i]
-    }
-    
+
     ##this is where I get stuck, the coev.div.single.gen doesnt
     #work with the new pars, might have to update the fxns##
-    for (i in 1:burnin.gen){
+    for (p in 1:burnin.gen){
+      pars$alpha_i <- alpha_i_burn[,p]
+      pars$alpha_j <- alpha_j_burn[,p]
+      pars$gamma_i <- gamma_i_burn[,p]
+      pars$gamma_j <- gamma_j_burn[,p]
       out <- coev_div_single_gen(meta_i, meta_j, pars)
       meta_i <- out$pop_i
       meta_j <- out$pop_j
