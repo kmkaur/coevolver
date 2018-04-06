@@ -6,7 +6,7 @@ trial_pops <- build_starting_pop(pars=yoder_2_pop())
 pars <- trial_pops$pars
 meta_i <- trial_pops$pops$meta_i
 meta_j <- trial_pops$pops$meta_j
-out <- coev_div_single_gen(meta_i, meta_j, pars)
+#out <- coev_div_single_gen(meta_i, meta_j, pars)
 
 coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
   
@@ -28,8 +28,9 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
     }
     
 
-    ##this is where I get stuck, the coev.div.single.gen doesnt
-    #work with the new pars, might have to update the fxns##
+    ##this is running the simulation for the burnin gen only
+    meta_i_list <- list()
+    meta_j_list <- list()
     for (p in 1:burnin.gen){
       pars$alpha_i <- alpha_i_burn[,p]
       pars$alpha_j <- alpha_j_burn[,p]
@@ -38,6 +39,8 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
       out <- coev_div_single_gen(meta_i, meta_j, pars)
       meta_i <- out$pop_i
       meta_j <- out$pop_j
+      meta_i_list[[p]] <- meta_i
+      meta_j_list[[p]] <- meta_j
     }
   }
   
