@@ -63,7 +63,8 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
     #NOW, meta_i_list and meta_j_list have the generations 1:burnin.gen
     #AND, meta_i_list2 and meta_j_list2 have the generations n.gen (n.gen-burnin.gen)
     
-    #need to combine both lists
+    #combine both lists
+    all_gens <- c(meta_i_list, meta_i_list2)
     
     #need to calculate means and variances
   
