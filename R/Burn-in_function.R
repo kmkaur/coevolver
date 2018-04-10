@@ -102,8 +102,9 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
          pop_means_i = pop_meansi, pop_means_j = pop_meansj )
 }
 
-#this does not work when pars$N is 50
-out <- coev_div(pars, n.gen = 100, burnin = TRUE, burnin.gen = 20, print=FALSE)
+ptm <- proc.time()
+out <- coev_div(pars, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print=FALSE)
+proc.time()-ptm 
 
 #run 1000 times
 
