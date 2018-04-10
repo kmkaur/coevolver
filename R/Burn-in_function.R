@@ -2,8 +2,6 @@
 #STILL working on this one!
 
 #build starting pars
-require(gmodels)
-require(ggplot2)
 trial_pops <- build_starting_pop(pars=yoder_2_pop())
 pars <- trial_pops$pars
 meta_i <- trial_pops$pops$meta_i
@@ -15,12 +13,13 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
   if (burnin){
     n.gen <- n.gen - burnin.gen
     
+    #create empty matrices to store new selection values
     alpha_i_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
     alpha_j_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
     gamma_i_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
     gamma_j_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
     
-    
+    #fill in matrices
     for (m in 1:pars$N){
         alpha_i_burn[m,] <- seq(0, pars$alpha_i[m], by=pars$alpha_i[m]/(burnin.gen-1))
         alpha_j_burn[m,] <- seq(0, pars$alpha_j[m], by=pars$alpha_j[m]/(burnin.gen-1))
@@ -44,6 +43,7 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
       meta_j_list[[p]] <- meta_j
     }
   }
+  
   
   ##run the simulation for the remaining gen (n.gen <- burnin.gen- n.gen)
   #final burnin.gen value is the value we want for the remaining generations
@@ -69,17 +69,14 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
     all_gens_i <- c(meta_i_list, meta_i_list2)
     all_gens_j <- c(meta_j_list, meta_j_list2)
     
-    #need to calculate 
-    #1) x = generation #  and y = mean phenotype for i and for j and 95% CI
-  
+    #create empty matrices to store means and variances
+    #columns=gen number and rows=pop number
     pop_meansi <- matrix(ncol=length(all_gens_i), nrow=pars$N)
     pop_vari <- matrix(ncol=length(all_gens_i), nrow=pars$N)
-    
     pop_meansj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
     pop_varj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
     
-    #columns=gen# and rows=pop#
- 
+    #fill in matrices
     for(q in 1:length(all_gens_i)){
         for(r in 1:pars$N){
           pop_meansi[r,q] <- mean(all_gens_i[[q]][[r]])
@@ -87,6 +84,7 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
         }
     }
     
+    #fill in matrices
     for(q in 1:length(all_gens_j)){
       for(r in 1:pars$N){
         pop_meansj[r,q] <- mean(all_gens_j[[q]][[r]])
@@ -94,30 +92,30 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
       }
     }
     
-    end_vari <- as.data.frame(pop_vari) 
-    end_varj <- as.data.frame(pop_varj) 
+    #convert to data frames
+    pop_vari <- as.data.frame(pop_vari) 
+    pop_varj <- as.data.frame(pop_varj) 
     pop_meansi <- as.data.frame(pop_meansi)
     pop_meansj <- as.data.frame(pop_meansj)
     list(all_gens_i = all_gens_i, all_gens_j = all_gens_j, 
-         final_variance_i = end_vari, final_variance_j = end_varj,
+         pop_var_i = pop_vari, pop_var_j = pop_varj,
          pop_means_i = pop_meansi, pop_mean_j = pop_meansj )
 }
 
-#make final variance figure
+#this does not work when pars$N is 50
 out <- coev_div(pars, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print=FALSE)
-last_variance_i <- out$final_variance_i[,n.gen]
-last_variance_j <- out$final_variance_j[,n.gen]
-var_graph <- qplot(out$final_variance_i$`Final Variance`, geom = "histogram", binwidth = 0.02, 
-                   xlab = "Final Variance", ylab = "Simulations")
+
+#run 1000 times
+
+
+
 
 
 
 
 #     for (j in 1:n.gen){
-#       #need to define j
-#       #need to find the mean of each population under each generation?
-#       res_i <- c(0, sapply(meta_i_list[[j]], mean))
-#       res_j <- c(0, sapply(meta_j_list[[j]], mean))
+#       res_i <- c(0, sapply(meta_i, mean))
+#       res_j <- c(0, sapply(meta_j, mean))
 #       res   <- rbind(res_i, res_j)
 #       names(res) <- c("gen", sapply(seq_len(length(meta_i)), function(x)
 #         paste("pop", x, sep="_")))
@@ -131,11 +129,6 @@ var_graph <- qplot(out$final_variance_i$`Final Variance`, geom = "histogram", bi
 #     res_i <- c(i, sapply(meta_i, mean))
 #     res_j <- c(i, sapply(meta_j, mean))
 #     }
-#     
-# }        
-# 
-# 
-# 
 
 
 
