@@ -102,9 +102,7 @@ coev_div <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE
 }
 
 #run it once ~ 12 mins
-ptm <- proc.time()
-out <- coev_div(all_pars=NULL, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print=FALSE)
-proc.time()-ptm 
+#out <- coev_div(all_pars=NULL, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print=FALSE)
 
 #####Function for running 1000 times#####
 coev_div_wrapper <- function(iter, all_pars=NULL, n.gen = 1000, 
@@ -114,8 +112,8 @@ coev_div_wrapper <- function(iter, all_pars=NULL, n.gen = 1000,
   saveRDS(out, paste0("out/mutualism_matching_sim_", iter, ".rds"))
 }
 
-#run 1000 times
-mclapply(c(1:1000), function(x) coev_div_wrapper(x, n.gen = 1000, burnin = TRUE, 
-                                              burnin.gen = 200, print = FALSE),
-                                              mc.cores = 50)
+#run the following 1000 times
+mclapply(c(1:2), function(x) coev_div_wrapper(x, n.gen = 10, burnin = TRUE, 
+                                              burnin.gen = 4, print = FALSE),
+                                              mc.cores = 2)
 
