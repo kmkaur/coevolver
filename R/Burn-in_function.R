@@ -54,7 +54,7 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
     
     meta_i_list2 <- list()
     meta_j_list2 <- list()
-    for (q in length(n.gen)){
+    for (q in 1:n.gen){
       out <- coev_div_single_gen(meta_i, meta_j, pars)
       meta_i <- out$pop_i
       meta_j <- out$pop_j
@@ -94,10 +94,8 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
       }
     }
     
-    end_vari <- as.data.frame(pop_vari[,n.gen]) 
-    end_varj <- as.data.frame(pop_varj[,n.gen]) 
-    colnames(end_vari) <- c("Final Variance")
-    colnames(end_varj) <- c("Final Variance")
+    end_vari <- as.data.frame(pop_vari) 
+    end_varj <- as.data.frame(pop_varj) 
     pop_meansi <- as.data.frame(pop_meansi)
     pop_meansj <- as.data.frame(pop_meansj)
     list(all_gens_i = all_gens_i, all_gens_j = all_gens_j, 
@@ -106,7 +104,9 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
 }
 
 #make final variance figure
-out <- coev_div(pars, n.gen = 5, burnin = TRUE, burnin.gen = 3, print=FALSE)
+out <- coev_div(pars, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print=FALSE)
+last_variance_i <- out$final_variance_i[,n.gen]
+last_variance_j <- out$final_variance_j[,n.gen]
 var_graph <- qplot(out$final_variance_i$`Final Variance`, geom = "histogram", binwidth = 0.02, 
                    xlab = "Final Variance", ylab = "Simulations")
 
