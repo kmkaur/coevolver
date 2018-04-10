@@ -111,7 +111,7 @@ coev_div_wrapper <- function(iter, all_pars=NULL, n.gen = 1000,
                              burnin = TRUE, burnin.gen = 200, print=FALSE){
   out <- coev_div(all_pars, n.gen = n.gen, burnin = burnin, 
                   burnin.gen = burnin.gen, print=print)
-  saveRDS(paste0("out/mutualism_matching_sim_", iter, ".rds"))
+  saveRDS(out, paste0("out/mutualism_matching_sim_", iter, ".rds"))
 }
 
 simulations <- lapply(c(1:2), function(x) coev_div_wrapper(x, n.gen = 10, burnin = TRUE, 
