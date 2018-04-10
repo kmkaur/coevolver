@@ -9,7 +9,7 @@ pars <- trial_pops$pars
 meta_i <- trial_pops$pops$meta_i
 meta_j <- trial_pops$pops$meta_j
 
-coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
+coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
   
   ## Burnin -- ramp up selection pressures over time
   if (burnin){
@@ -37,9 +37,9 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
       pars$alpha_j <- alpha_j_burn[,p]
       pars$gamma_i <- gamma_i_burn[,p]
       pars$gamma_j <- gamma_j_burn[,p]
-      out <- coev_div_single_gen(meta_i, meta_j, pars)
-      meta_i <- out$pop_i
-      meta_j <- out$pop_j
+      run <- coev_div_single_gen(meta_i, meta_j, pars)
+      meta_i <- run$pop_i
+      meta_j <- run$pop_j
       meta_i_list[[p]] <- meta_i
       meta_j_list[[p]] <- meta_j
     }
@@ -54,7 +54,7 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
     
     meta_i_list2 <- list()
     meta_j_list2 <- list()
-    for (q in seq_len(n.gen)){
+    for (q in length(n.gen)){
       out <- coev_div_single_gen(meta_i, meta_j, pars)
       meta_i <- out$pop_i
       meta_j <- out$pop_j
@@ -73,28 +73,24 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen=200, print=FALSE){
     #1) x = generation #  and y = mean phenotype for i and for j and 95% CI
   
     pop_means <- matrix(ncol=length(all_gens), nrow=pars$N)
-    pop_ci <- matrix(ncol=length(all_gens), nrow=pars$N)
     pop_var <- matrix(ncol=length(all_gens), nrow=pars$N)
     #columns=gen# and rows=pop#
  
     for(q in 1:length(all_gens)){
         for(r in 1:pars$N){
           pop_means[r,q] <- mean(all_gens[[q]][[r]])
-          #pop_ci[r,q] <- ci(all_gens[[q]][[r]])
           pop_var[r,q] <- var(all_gens[[q]][[r]])
         }
-    #pop_means <- as.data.frame(pop_means)
-    #pop_var <- as.data.frame(pop_var)
-    
-   }
-  
-    
+    }
+    end_var <- as.data.frame(pop_var[,5]) 
+    colnames(end_var) <- c("Final Variance")
+    pop_means <- as.data.frame(pop_means)
+    list(all_gens = all_gens, final_variance = end_var, pop_means = pop_means )
 }
 
 #make final variance figure
-final_var <- as.data.frame(pop_var[,5])
-colnames(final_var) <- c("variance")
-var_graph <- qplot(final_var$variance, geom = "histogram", binwidth = 0.02, 
+out <- coev_div(pars, n.gen = 5, burnin = FALSE, burnin.gen = 3, print=FALSE)
+var_graph <- qplot(out$final_variance$`Final Variance`, geom = "histogram", binwidth = 0.02, 
                    xlab = "Final Variance", ylab = "Simulations")
 
 
