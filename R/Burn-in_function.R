@@ -72,25 +72,42 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
     #need to calculate 
     #1) x = generation #  and y = mean phenotype for i and for j and 95% CI
   
-    pop_means <- matrix(ncol=length(all_gens), nrow=pars$N)
-    pop_var <- matrix(ncol=length(all_gens), nrow=pars$N)
+    pop_meansi <- matrix(ncol=length(all_gens_i), nrow=pars$N)
+    pop_vari <- matrix(ncol=length(all_gens_i), nrow=pars$N)
+    
+    pop_meansj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
+    pop_varj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
+    
     #columns=gen# and rows=pop#
  
-    for(q in 1:length(all_gens)){
+    for(q in 1:length(all_gens_i)){
         for(r in 1:pars$N){
-          pop_means[r,q] <- mean(all_gens[[q]][[r]])
-          pop_var[r,q] <- var(all_gens[[q]][[r]])
+          pop_meansi[r,q] <- mean(all_gens_i[[q]][[r]])
+          pop_vari[r,q] <- var(all_gens_i[[q]][[r]])
         }
     }
-    end_var <- as.data.frame(pop_var[,5]) 
-    colnames(end_var) <- c("Final Variance")
-    pop_means <- as.data.frame(pop_means)
-    list(all_gens = all_gens, final_variance = end_var, pop_means = pop_means )
+    
+    for(q in 1:length(all_gens_j)){
+      for(r in 1:pars$N){
+        pop_meansj[r,q] <- mean(all_gens_j[[q]][[r]])
+        pop_varj[r,q] <- var(all_gens_j[[q]][[r]])
+      }
+    }
+    
+    end_vari <- as.data.frame(pop_vari[,n.gen]) 
+    end_varj <- as.data.frame(pop_varj[,n.gen]) 
+    colnames(end_vari) <- c("Final Variance")
+    colnames(end_varj) <- c("Final Variance")
+    pop_meansi <- as.data.frame(pop_meansi)
+    pop_meansj <- as.data.frame(pop_meansj)
+    list(all_gens_i = all_gens_i, all_gens_j = all_gens_j, 
+         final_variance_i = end_vari, final_variance_j = end_varj,
+         pop_means_i = pop_meansi, pop_mean_j = pop_meansj )
 }
 
 #make final variance figure
-out <- coev_div(pars, n.gen = 5, burnin = FALSE, burnin.gen = 3, print=FALSE)
-var_graph <- qplot(out$final_variance$`Final Variance`, geom = "histogram", binwidth = 0.02, 
+out <- coev_div(pars, n.gen = 5, burnin = TRUE, burnin.gen = 3, print=FALSE)
+var_graph <- qplot(out$final_variance_i$`Final Variance`, geom = "histogram", binwidth = 0.02, 
                    xlab = "Final Variance", ylab = "Simulations")
 
 
