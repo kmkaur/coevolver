@@ -1,12 +1,3 @@
-#####create populations#####
-
-ptm <- proc.time()
-trial_pops <- build_starting_pop(pars=yoder_defaults())
-pars <- trial_pops$pars
-meta_i <- trial_pops$pops$meta_i
-meta_j <- trial_pops$pops$meta_j
-proc.time()-ptm 
-
 ######mating and reproduction#####
 coev_div_single_gen <- function(meta_i, meta_j, pars){
 
