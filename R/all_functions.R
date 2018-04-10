@@ -1,7 +1,7 @@
 #load required libraries
 library(MASS)
+library(parallel)
 set.seed(123)
-
 
 #####These are functions to create starting values#####
 

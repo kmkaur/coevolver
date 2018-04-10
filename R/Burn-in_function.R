@@ -114,10 +114,8 @@ coev_div_wrapper <- function(iter, all_pars=NULL, n.gen = 1000,
   saveRDS(out, paste0("out/mutualism_matching_sim_", iter, ".rds"))
 }
 
-simulations <- lapply(c(1:2), function(x) coev_div_wrapper(x, n.gen = 10, burnin = TRUE, 
-                                            burnin.gen = 4, print=FALSE))
+#run 1000 times
+mclapply(c(1:1000), function(x) coev_div_wrapper(x, n.gen = 1000, burnin = TRUE, 
+                                              burnin.gen = 200, print = FALSE),
+                                              mc.cores = 50)
 
-
-simulations <- mclapply(c(1:2), function(x) coev_div_wrapper(x, n.gen = 10, burnin = TRUE, 
-                                              burnin.gen = 4, print = FALSE),
-                                              mc.cores = 2)
