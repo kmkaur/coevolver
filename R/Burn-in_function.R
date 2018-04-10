@@ -1,13 +1,13 @@
 #####Function for simulating across multiple generations#####
-#STILL working on this one!
 
-#build starting pars
-trial_pops <- build_starting_pop(pars=yoder_defaults())
-pars <- trial_pops$pars
-meta_i <- trial_pops$pops$meta_i
-meta_j <- trial_pops$pops$meta_j
-
-coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
+coev_div <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
+  
+  if (is.null(all_pars)){
+    all_pars <- build_starting_pop(pars=yoder_defaults())
+  }
+  pars <- all_pars$pars
+  meta_i <- all_pars$pops$meta_i
+  meta_j <- all_pars$pops$meta_j
   
   ## Burnin -- ramp up selection pressures over time
   if (burnin){
@@ -97,46 +97,27 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
     pop_varj <- as.data.frame(pop_varj) 
     pop_meansi <- as.data.frame(pop_meansi)
     pop_meansj <- as.data.frame(pop_meansj)
-    list(all_gens_i = all_gens_i, all_gens_j = all_gens_j, 
-         pop_var_i = pop_vari, pop_var_j = pop_varj,
+    list(pars = pars,pop_var_i = pop_vari, pop_var_j = pop_varj,
          pop_means_i = pop_meansi, pop_means_j = pop_meansj )
 }
 
+#run it once ~ 12 mins
 ptm <- proc.time()
-out <- coev_div(pars, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print=FALSE)
+out <- coev_div(all_pars=NULL, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print=FALSE)
 proc.time()-ptm 
 
-#run 1000 times
+#####Function for running 1000 times#####
+coev_div_wrapper <- function(iter, all_pars=NULL, n.gen = 1000, 
+                             burnin = TRUE, burnin.gen = 200, print=FALSE){
+  out <- coev_div(all_pars, n.gen = n.gen, burnin = burnin, 
+                  burnin.gen = burnin.gen, print=print)
+  saveRDS(paste0("out/mutualism_matching_sim_", iter, ".rds"))
+}
+
+simulations <- lapply(c(1:2), function(x) coev_div_wrapper(x, n.gen = 10, burnin = TRUE, 
+                                            burnin.gen = 4, print=FALSE))
 
 
-
-
-
-
-
-#     for (j in 1:n.gen){
-#       res_i <- c(0, sapply(meta_i, mean))
-#       res_j <- c(0, sapply(meta_j, mean))
-#       res   <- rbind(res_i, res_j)
-#       names(res) <- c("gen", sapply(seq_len(length(meta_i)), function(x)
-#         paste("pop", x, sep="_")))
-#     }
-#     
-#     for (i in seq_len(n.gen)){
-#     #need to define i
-#     out <- coev_div_single_gen(meta_i, meta_j, pars)
-#     meta_i <- out$pop_i
-#     meta_j <- out$pop_j
-#     res_i <- c(i, sapply(meta_i, mean))
-#     res_j <- c(i, sapply(meta_j, mean))
-#     }
-
-
-
-
-
-
-
-
-
-
+simulations <- mclapply(c(1:2), function(x) coev_div_wrapper(x, n.gen = 10, burnin = TRUE, 
+                                              burnin.gen = 4, print = FALSE),
+                                              mc.cores = 2)
