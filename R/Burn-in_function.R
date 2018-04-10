@@ -42,15 +42,15 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
       meta_i_list[[p]] <- meta_i
       meta_j_list[[p]] <- meta_j
     }
-  }
-  
-  
-  ##run the simulation for the remaining gen (n.gen <- burnin.gen- n.gen)
-  #final burnin.gen value is the value we want for the remaining generations
+    
+    ##run the simulation for the remaining gen (n.gen <- burnin.gen- n.gen)
+    #final burnin.gen value is the value we want for the remaining generations
     pars$alpha_i <- alpha_i_burn[,burnin.gen] 
     pars$alpha_j <- alpha_j_burn[,burnin.gen] 
     pars$gamma_i <- gamma_i_burn[,burnin.gen]
     pars$gamma_j <- gamma_j_burn[,burnin.gen]
+    
+  }
     
     meta_i_list2 <- list()
     meta_j_list2 <- list()
@@ -99,7 +99,7 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
     pop_meansj <- as.data.frame(pop_meansj)
     list(all_gens_i = all_gens_i, all_gens_j = all_gens_j, 
          pop_var_i = pop_vari, pop_var_j = pop_varj,
-         pop_means_i = pop_meansi, pop_mean_j = pop_meansj )
+         pop_means_i = pop_meansi, pop_means_j = pop_meansj )
 }
 
 #this does not work when pars$N is 50
