@@ -2,7 +2,7 @@
 #STILL working on this one!
 
 #build starting pars
-trial_pops <- build_starting_pop(pars=yoder_2_pop())
+trial_pops <- build_starting_pop(pars=yoder_defaults())
 pars <- trial_pops$pars
 meta_i <- trial_pops$pops$meta_i
 meta_j <- trial_pops$pops$meta_j
@@ -36,11 +36,11 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
       pars$alpha_j <- alpha_j_burn[,p]
       pars$gamma_i <- gamma_i_burn[,p]
       pars$gamma_j <- gamma_j_burn[,p]
-      run <- coev_div_single_gen(meta_i, meta_j, pars)
-      meta_i <- run$pop_i
-      meta_j <- run$pop_j
-      meta_i_list[[p]] <- meta_i
-      meta_j_list[[p]] <- meta_j
+      run <- coev_div_single_gen(meta_i = meta_i, meta_j = meta_j, pars = pars)
+      meta_ii <- run$pop_i
+      meta_jj <- run$pop_j
+      meta_i_list[[p]] <- meta_ii
+      meta_j_list[[p]] <- meta_jj
     }
     
     ##run the simulation for the remaining gen (n.gen <- burnin.gen- n.gen)
@@ -56,10 +56,10 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
     meta_j_list2 <- list()
     for (q in 1:n.gen){
       out <- coev_div_single_gen(meta_i, meta_j, pars)
-      meta_i <- out$pop_i
-      meta_j <- out$pop_j
-      meta_i_list2[[q]] <- meta_i
-      meta_j_list2[[q]] <- meta_j
+      meta_ii <- out$pop_i
+      meta_jj <- out$pop_j
+      meta_i_list2[[q]] <- meta_ii
+      meta_j_list2[[q]] <- meta_jj
     }
     
     #NOW, meta_i_list and meta_j_list have the generations 1:burnin.gen
@@ -103,7 +103,7 @@ coev_div <- function(pars, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
 }
 
 #this does not work when pars$N is 50
-out <- coev_div(pars, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print=FALSE)
+out <- coev_div(pars, n.gen = 100, burnin = TRUE, burnin.gen = 20, print=FALSE)
 
 #run 1000 times
 
