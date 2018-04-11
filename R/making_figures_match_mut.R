@@ -2,8 +2,8 @@
 library(ggplot2)
 
 #making data structure work figure 4 eqiuvalent
-i_sim <- read.csv(file="solo_sim_i.csv", row.names = 1)
-j_sim <- read.csv(file="solo_sim_j.csv", row.names = 1)
+i_sim <- read.csv(file="solo_sim_i_mm.csv", row.names = 1)
+j_sim <- read.csv(file="solo_sim_j_mm.csv", row.names = 1)
 averages_i <- i_sim[101,]
 averages_i <- as.numeric(averages_i)
 averages_j <- j_sim[101,] 
@@ -17,7 +17,7 @@ plot_j <- ggplot(data=df_i, aes(x=generations, y=averages_j)) +
   geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype")
 
 #making data structure work figure 3 eqiuvalent
-setwd("/Users/Katrina/git_practice/coevolver/out")
+setwd("/Users/Katrina/git_practice/coevolver/out_m_m")
 list.filenames<-list.files(pattern=".rds")
 list.data.i<-list()
 list.data.j<-list()

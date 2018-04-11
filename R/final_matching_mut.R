@@ -442,7 +442,7 @@ coev_div_wrapper <- function(iter, all_pars=NULL, n.gen = 1000,
                              burnin = TRUE, burnin.gen = 200, print=FALSE){
   out <- coev_div(all_pars, n.gen = n.gen, burnin = burnin, 
                   burnin.gen = burnin.gen, print=print)
-  saveRDS(out, paste0("out/mutualism_matching_sim_", iter, ".rds"))
+  saveRDS(out, paste0("out_m_m/mutualism_matching_sim_", iter, ".rds"))
 }
 
 #run the following 1000 times
@@ -598,4 +598,4 @@ coev_div_2 <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FAL
 
 #run the simulation with the different pars for 1000 generations
 solo_sim <- coev_div_2(all_pars = NULL, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print = FALSE)
-write.csv(solo_sim, file = "solo_sim.csv")
+write.csv(solo_sim_mm, file = "solo_sim.csv")
