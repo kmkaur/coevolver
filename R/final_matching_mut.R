@@ -463,7 +463,7 @@ yoder_defaults_2 <- function(){
        theta=theta, v_s=v_s)
 }
 
-get_parameters <- function(f){
+get_parameters_2 <- function(f){
   N <- f$N()
   K_i <- round(f$K(N))
   K_j <- round(f$K(N))
