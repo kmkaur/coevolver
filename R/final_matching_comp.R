@@ -596,6 +596,6 @@ coev_div_2 <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FAL
 solo_sim_mc <- coev_div_2(all_pars = NULL, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print = FALSE)
 write.csv(solo_sim_mc, file = "solo_sim_mc.csv")
 
-#run part 4 1000 times
+#run part 3 1000 times
 mclapply(c(1:1000), function(x) coev_div_wrapper(x, n.gen = 1000, burnin = TRUE, burnin.gen = 200, 
                                                  print = FALSE), mc.cores = 50)
