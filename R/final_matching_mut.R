@@ -597,5 +597,5 @@ coev_div_2 <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FAL
 }
 
 #run the simulation with the different pars for 1000 generations
-solo_sim <- coev_div_2(all_pars = NULL, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print = FALSE)
-write.csv(solo_sim_mm, file = "solo_sim.csv")
+solo_sim_mm <- coev_div_2(all_pars = NULL, n.gen = 1000, burnin = TRUE, burnin.gen = 200, print = FALSE)
+write.csv(solo_sim_mm, file = "solo_sim_mm.csv")
