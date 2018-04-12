@@ -11,9 +11,9 @@ averages_j <- as.numeric(averages_j)
 generations <- 1:1000
 df_i <- data.frame(generations, averages_i)
 df_j <- data.frame(generations, averages_j)
-plot_i <- ggplot(data=df_i, aes(x=generations, y=averages_i)) +
+plot_i_mm <- ggplot(data=df_i, aes(x=generations, y=averages_i)) +
   geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype")
-plot_j <- ggplot(data=df_i, aes(x=generations, y=averages_j)) +
+plot_j_mm <- ggplot(data=df_i, aes(x=generations, y=averages_j)) +
   geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype")
 
 #making data structure work figure 3 eqiuvalent
@@ -48,9 +48,9 @@ for(i in 1:length(list.data.j)){
 
 end_var_i <- t(as.data.frame(end_variances_i))
 end_var_j <- t(as.data.frame(end_variances_j))
-var_i_fig <- qplot(end_var_i[,1], geom="histogram", binwidth = 0.02, 
+var_i_fig_mm <- qplot(end_var_i[,1], geom="histogram", binwidth = 0.02, 
            xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
-var_j_fig <- qplot(end_var_j[,1], geom="histogram", binwidth = 0.02, 
+var_j_fig_mm <- qplot(end_var_j[,1], geom="histogram", binwidth = 0.02, 
                    xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
 
 
