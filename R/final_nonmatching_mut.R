@@ -495,7 +495,7 @@ build_starting_pop_2 <- function(pars=NULL){
 coev_div_2 <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
   
   if (is.null(all_pars)){
-    all_pars <- build_starting_pop(pars=yoder_defaults())
+    all_pars <- build_starting_pop_2(pars=yoder_defaults_2())
   }
   pars <- all_pars$pars
   meta_i <- all_pars$pops$meta_i
