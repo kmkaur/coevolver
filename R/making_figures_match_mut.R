@@ -1,5 +1,6 @@
 #load packages
 library(ggplot2)
+library(cowplot)
 
 #making data structure work figure 4 eqiuvalent
 i_sim <- read.csv(file="solo_sim_i_mm.csv", row.names = 1)
@@ -12,9 +13,10 @@ generations <- 1:1000
 df_i <- data.frame(generations, averages_i)
 df_j <- data.frame(generations, averages_j)
 plot_i_mm <- ggplot(data=df_i, aes(x=generations, y=averages_i)) +
-  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype")
+  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype") + ggtitle("Matching Mutualism Species i")
 plot_j_mm <- ggplot(data=df_i, aes(x=generations, y=averages_j)) +
-  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype")
+  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype") + ggtitle("Matching Mutualism Species j")
+plot_grid(plot_i_mm, plot_j_mm)
 
 #making data structure work figure 3 eqiuvalent
 setwd("/Users/Katrina/git_practice/coevolver/out_m_m")
