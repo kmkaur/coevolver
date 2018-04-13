@@ -1,5 +1,6 @@
 #load packages
 library(ggplot2)
+library(cowplot)
 
 #making data structure work figure 4 eqiuvalent
 i_sim <- read.csv(file="solo_sim_i_mc.csv", row.names = 1)
@@ -11,10 +12,11 @@ averages_j <- as.numeric(averages_j)
 generations <- 1:1000
 df_i <- data.frame(generations, averages_i)
 df_j <- data.frame(generations, averages_j)
-plot_i_mm <- ggplot(data=df_i, aes(x=generations, y=averages_i)) +
-  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype")
-plot_j_mm <- ggplot(data=df_i, aes(x=generations, y=averages_j)) +
-  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype")
+plot_i_mc <- ggplot(data=df_i, aes(x=generations, y=averages_i)) +
+  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype") + ggtitle("Matching Competition Species i")
+plot_j_mc <- ggplot(data=df_i, aes(x=generations, y=averages_j)) +
+  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype") + ggtitle("Matching Competition Species j")
+plot_grid(plot_i_mc, plot_j_mc)
 
 #making data structure work figure 3 eqiuvalent
 setwd("/Users/Katrina/git_practice/coevolver/out_m_c")
