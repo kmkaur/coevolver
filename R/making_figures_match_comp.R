@@ -50,9 +50,9 @@ for(i in 1:length(list.data.j)){
 
 end_var_i <- t(as.data.frame(end_variances_i))
 end_var_j <- t(as.data.frame(end_variances_j))
-var_i_fig_mm <- qplot(end_var_i[,1], geom="histogram", binwidth = 0.02, 
+var_i_fig_mc <- qplot(end_var_i[,1], geom="histogram", binwidth = 0.02, 
                       xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
-var_j_fig_mm <- qplot(end_var_j[,1], geom="histogram", binwidth = 0.02, 
+var_j_fig_mc <- qplot(end_var_j[,1], geom="histogram", binwidth = 0.02, 
                       xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
 
 
