@@ -36,4 +36,8 @@ var_j_fig_mm <- qplot(end_var_j[,1], geom="histogram", binwidth = 0.02,
                    xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
 plot_grid(var_i_fig_mm, var_j_fig_mm)
 
+end_var <- cbind(end_var_i, end_var_j)
+write.csv(end_var, file = "matching_mutualism_variance.csv")
+
+
 

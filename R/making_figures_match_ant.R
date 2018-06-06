@@ -1,5 +1,6 @@
 #load packages
 library(ggplot2)
+library(cowplot)
 
 #making data structure work figure 4 eqiuvalent
 i_sim <- read.csv(file="solo_sim_i_ma.csv", row.names = 1)
@@ -52,6 +53,8 @@ var_i_fig_mm <- qplot(end_var_i[,1], geom="histogram", binwidth = 0.02,
                       xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
 var_j_fig_mm <- qplot(end_var_j[,1], geom="histogram", binwidth = 0.02, 
                       xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
+plot_grid(var_i_fig_mm, var_j_fig_mm)
 
-
+end_var <- cbind(end_var_i, end_var_j)
+write.csv(end_var, file = "matching_antagonism_variance.csv")
 

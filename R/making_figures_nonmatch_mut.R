@@ -19,7 +19,7 @@ plot_j_nm <- ggplot(data=df_i, aes(x=generations, y=averages_j)) +
 plot_grid(plot_i_nm, plot_j_nm)
 
 #making data structure work figure 3 eqiuvalent
-setwd("/Users/Katrina/git_practice/coevolver/out_n_m")
+setwd("~/simulation_output/out_mut_nonmatch/out_n_m")
 list.filenames<-list.files(pattern=".rds")
 list.data.i<-list()
 list.data.j<-list()
@@ -50,10 +50,11 @@ for(i in 1:length(list.data.j)){
 
 end_var_i <- t(as.data.frame(end_variances_i))
 end_var_j <- t(as.data.frame(end_variances_j))
-var_i_fig_nm <- qplot(end_var_i[,1], geom="histogram", binwidth = 0.02, 
-                   xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
-var_j_fig_nm <- qplot(end_var_j[,1], geom="histogram", binwidth = 0.02, 
-                   xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
+var_i_fig_mm <- qplot(end_var_i[,1], geom="histogram", binwidth = 0.02, 
+                      xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
+var_j_fig_mm <- qplot(end_var_j[,1], geom="histogram", binwidth = 0.02, 
+                      xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
+plot_grid(var_i_fig_mm, var_j_fig_mm)
 
-
-
+end_var <- cbind(end_var_i, end_var_j)
+write.csv(end_var, file = "nonmatching_mutualism_variance.csv")
