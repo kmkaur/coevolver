@@ -2,8 +2,8 @@
 
 ##########PART ONE - SINGLE FUNCTIONS##########
 #load required libraries
-library(MASS)
-library(parallel)
+library(MASS) #for mvrnorm fxn
+library(parallel) #for mclapply fxn
 set.seed(123)
 
 #####These are functions to create starting values#####
@@ -36,6 +36,25 @@ get_parameters <- function(f){
 yoder_defaults <- function(){
   N <- function() 50
   K <- function(n) runif(n, 300, 2000)
+  gamma <- function(n) runif(n, 0.005, 1)
+  alpha <- function(n) runif(n, 1,10)
+  zeta <- function(n) runif(n, 0.01, 5)
+  m <- function(n) runif(n, 0, 0.01)
+  mean <- c(runif(1, 0.4, 0.6), runif(1, 0.4, 0.6))
+  var <- runif(1, 0, 1)
+  sigma1 <- runif(1, -.1, .1)
+  sigma2 <- runif(1, -.1, .1)
+  sigma <- matrix(c(sigma1^2, sigma1*sigma2*var, sigma1*sigma2*var, sigma2^2),2)
+  #sigma gives correlation structure to theta
+  theta <- function(n) mvrnorm(n, mu=mean, Sigma=sigma, empirical = FALSE)
+  v_s <- function() 0.01
+  list(N=N, K=K, gamma=gamma, alpha=alpha, zeta=zeta, m=m,
+       theta=theta, v_s=v_s)
+}
+
+test_parameters <- function(){
+  N <- function() 2
+  K <- function(n) runif(n, 2, 4)
   gamma <- function(n) runif(n, 0.005, 1)
   alpha <- function(n) runif(n, 1,10)
   zeta <- function(n) runif(n, 0.01, 5)
