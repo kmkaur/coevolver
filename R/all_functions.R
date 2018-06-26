@@ -179,21 +179,21 @@ fitness_f_diff_ben <- function(zeta, alpha, fit_diff){
   out <- list(w)
 }
 
-###add remainders first####
+###add remainders first is necessary####
 ###then do abiotic selection####
 
 
 #####Function for abiotic selection#####
 ## Note: We ignore the possibility of local extinction
-abiotic_sel <- function(x, theta, gamma){
+abiotic_sel <- function(x, theta, gamma, wbio){
   w <- lapply(seq_len(length(x)), function(y)
-    fitness_f(x[[y]], theta[y], gamma)) 
+    fitness_f(x[[y]], theta[y], gamma, wbio[[y]][[y]][[y]])) 
   get_survivors(x, w)
 }
 
 #####Fitnesses function (quadratic stabilizing selection)#####
-fitness_f <- function(x, theta, gamma) 
-  exp(-gamma * (x - theta)^2)
+fitness_f <- function(x, theta, gamma, wbio) 
+  (exp(-gamma * (x - theta)^2)) * (wbio)
 
 get_survivors <- function(x, w){ 
   surv <- lapply(w, surv_id) 
