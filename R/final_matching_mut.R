@@ -141,30 +141,6 @@ migrate_m <- function(x, z, km){
   z
 }
 
-#####Function for abiotic selection#####
-## Note: We ignore the possibility of local extinction
-abiotic_sel <- function(x, theta, gamma){ 
-  w <- lapply(seq_len(length(x)), function(y)
-    fitness_f(x[[y]], theta[y], gamma))
-  get_survivors(x, w)
-}
-
-
-#####Fitnesses function (quadratic stabilizing selection)#####
-fitness_f <- function(x, theta, gamma)
-  exp(-gamma * (x - theta)^2)
-
-get_survivors <- function(x, w){
-  surv <- lapply(w, surv_id)
-  lapply(seq_len(length(x)), function(y) {x[[y]][surv[[y]]]})
-}
-
-
-#####Function to get survivors#####
-surv_id <- function(x)
-  which(x > runif(1))
-
-
 #####Function to match up individuals (partnerships)#####
 get_partners <- function(i,j){ 
   min_n <- min(length(i), length(j))
@@ -225,6 +201,29 @@ fitness_f_diff_ben <- function(zeta, alpha, fit_diff){
   out <- list(w)
 }
 
+#####Function for abiotic selection#####
+## Note: We ignore the possibility of local extinction
+abiotic_sel <- function(x, theta, gamma){ 
+  w <- lapply(seq_len(length(x)), function(y)
+    fitness_f(x[[y]], theta[y], gamma))
+  get_survivors(x, w)
+}
+
+
+#####Fitnesses function (quadratic stabilizing selection)#####
+fitness_f <- function(x, theta, gamma)
+  exp(-gamma * (x - theta)^2)
+
+get_survivors <- function(x, w){
+  surv <- lapply(w, surv_id)
+  lapply(seq_len(length(x)), function(y) {x[[y]][surv[[y]]]})
+}
+
+
+#####Function to get survivors#####
+surv_id <- function(x)
+  which(x > runif(1))
+
 ##########PART TWO - MATCHING MUTUALISM SPECIFIC FUNCTION##########
 coev_div_single_gen <- function(meta_i, meta_j, pars){
   
@@ -278,7 +277,7 @@ coev_div_single_gen <- function(meta_i, meta_j, pars){
   }
   proc.time()-ptm 
   
-  #####fitness matching#####
+  #####fitness matching, calculate wbio#####
   
   ptm <- proc.time()
   fit_diff <- list()
@@ -301,62 +300,40 @@ coev_div_single_gen <- function(meta_i, meta_j, pars){
   }
   proc.time()-ptm 
   
-  #####add remainders to have all phenotypes#####
+  #####add remainders if required - not in mutualism case#####
   
   ptm <- proc.time()
   post_bio_i <- list()
   for(i in 1:pars$N){
-    post_bio <- c(unlist(partners[[i]]$part$sp_i), partners[[i]]$rem_i)
+    post_bio <- c(unlist(partners[[i]]$part$sp_i)) #, partners[[i]]$rem_i)  #rem die
     post_bio_i[[i]] <- post_bio[!is.na(post_bio)]
   }
   
   post_bio_j <- list()
   for(i in 1:pars$N){
-    post_bio <- c(unlist(partners[[i]]$part$sp_i), partners[[i]]$rem_j)
+    post_bio <- c(unlist(partners[[i]]$part$sp_j)) #, partners[[i]]$rem_j) #rem die
     post_bio_j[[i]] <- post_bio[!is.na(post_bio)]
   }
   proc.time()-ptm
-  
-  list(pop_i = post_bio_i, pop_j = post_bio_j)
-  
-}
-  
-#####add remainders to have all fitnessess#####
-
 
   #####abiotic sel#####
   
   ptm <- proc.time()
   post_sel_i <- list()
   for(i in 1:pars$N){
-    post_sel <- abiotic_sel(post_bio_i[i], pars$theta_i[i], pars$gamma_i[i])
+    post_sel <- abiotic_sel(post_bio_i[i], pars$theta_i[i], pars$gamma_i[i], fit_match_ben_i[i])
     post_sel_i[i] <- post_sel
   }
   
   post_sel_j <- list()
   for(i in 1:pars$N){
-    post_sel <- abiotic_sel(post_bio_j[i], pars$theta_j[i], pars$gamma_j[i])
-    post_sel_j[i] <- post_sel
+    post_sel2 <- abiotic_sel(post_bio_j[i], pars$theta_j[i], pars$gamma_j[i], fit_match_ben_j[i])
+    post_sel_j[i] <- post_sel2
   }
   proc.time()-ptm 
-  
-  ###survivors and remainders###
-  
-  ptm <- proc.time()
-  surv_match_ben_i <- list()
-  for(i in 1:pars$N){
-    survivors <- get_survivors(post_sel_i[i], fit_match_ben_i[[i]])
-    surv_match_ben_i[[i]] <- survivors
-  }
-  
-  surv_match_ben_j <- list()
-  for(i in 1:pars$N){
-    survivors <- get_survivors(post_sel_j[i], fit_match_ben_j[[i]])
-    surv_match_ben_j[[i]] <- survivors
-  }
-  proc.time()-ptm
-  
 
+  list(pop_i = post_sel_i, pop_j = post_sel_j)
+} 
 
 ##########PART THREE - RUN 1000 GEN##########
 coev_div <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
