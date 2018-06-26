@@ -258,28 +258,12 @@ coev_div_single_gen <- function(meta_i, meta_j, pars){
   }
   proc.time()-ptm 
   
-  #####abiotic sel#####
-  
-  ptm <- proc.time()
-  post_sel_i <- list()
-  for(i in 1:pars$N){
-    post_sel <- abiotic_sel(remix_i[i], pars$theta_i[i], pars$gamma_i[i])
-    post_sel_i[i] <- post_sel
-  }
-  
-  post_sel_j <- list()
-  for(i in 1:pars$N){
-    post_sel <- abiotic_sel(remix_j[i], pars$theta_j[i], pars$gamma_j[i])
-    post_sel_j[i] <- post_sel
-  }
-  proc.time()-ptm 
-  
   #####match individuals#####
   
   ptm <- proc.time()
   partners <- list()
   for(i in 1:pars$N){
-    gp <- get_partners(post_sel_i[[i]], post_sel_j[[i]])
+    gp <- get_partners(remix_i[[i]], remix_j[[i]])
     partners[[i]] <- gp
   }
   proc.time()-ptm 
@@ -317,6 +301,45 @@ coev_div_single_gen <- function(meta_i, meta_j, pars){
   }
   proc.time()-ptm 
   
+  #####add remainders to have all phenotypes#####
+  
+  ptm <- proc.time()
+  post_bio_i <- list()
+  for(i in 1:pars$N){
+    post_bio <- c(unlist(partners[[i]]$part$sp_i), partners[[i]]$rem_i)
+    post_bio_i[[i]] <- post_bio[!is.na(post_bio)]
+  }
+  
+  post_bio_j <- list()
+  for(i in 1:pars$N){
+    post_bio <- c(unlist(partners[[i]]$part$sp_i), partners[[i]]$rem_j)
+    post_bio_j[[i]] <- post_bio[!is.na(post_bio)]
+  }
+  proc.time()-ptm
+  
+  list(pop_i = post_bio_i, pop_j = post_bio_j)
+  
+}
+  
+#####add remainders to have all fitnessess#####
+
+
+  #####abiotic sel#####
+  
+  ptm <- proc.time()
+  post_sel_i <- list()
+  for(i in 1:pars$N){
+    post_sel <- abiotic_sel(post_bio_i[i], pars$theta_i[i], pars$gamma_i[i])
+    post_sel_i[i] <- post_sel
+  }
+  
+  post_sel_j <- list()
+  for(i in 1:pars$N){
+    post_sel <- abiotic_sel(post_bio_j[i], pars$theta_j[i], pars$gamma_j[i])
+    post_sel_j[i] <- post_sel
+  }
+  proc.time()-ptm 
+  
   ###survivors and remainders###
   
   ptm <- proc.time()
@@ -333,25 +356,7 @@ coev_div_single_gen <- function(meta_i, meta_j, pars){
   }
   proc.time()-ptm
   
-  #####add remainders#####
-  
-  ptm <- proc.time()
-  post_bio_i <- list()
-  for(i in 1:pars$N){
-    post_bio <- c(unlist(surv_match_ben_i[[i]]), partners[[i]]$rem_i)
-    post_bio_i[[i]] <- post_bio[!is.na(post_bio)]
-  }
-  
-  post_bio_j <- list()
-  for(i in 1:pars$N){
-    post_bio <- c(unlist(surv_match_ben_j[[i]]), partners[[i]]$rem_j)
-    post_bio_j[[i]] <- post_bio[!is.na(post_bio)]
-  }
-  proc.time()-ptm
-  
-  list(pop_i = post_bio_i, pop_j = post_bio_j)
-  
-}
+
 
 ##########PART THREE - RUN 1000 GEN##########
 coev_div <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE){
