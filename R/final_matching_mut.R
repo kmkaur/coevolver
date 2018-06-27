@@ -52,6 +52,7 @@ yoder_defaults <- function(){
        theta=theta, v_s=v_s)
 }
 
+#for practice, 2 small populations
 test_parameters <- function(){
   N <- function() 2
   K <- function(n) runif(n, 2, 4)
@@ -71,6 +72,7 @@ test_parameters <- function(){
        theta=theta, v_s=v_s)
 }
 
+#for practice, 2 regular sized populations
 yoder_2_pop <- function(){
   N <- function() 2
   K <- function(n) runif(n, 300, 2000)
@@ -202,6 +204,7 @@ fitness_f_diff_ben <- function(zeta, alpha, fit_diff){
 }
 
 ###add remainders first is necessary####
+#remainders die in mutualisms, and in 1 partner in antagonisms
 ###then do abiotic selection####
 
 
@@ -229,6 +232,8 @@ surv_id <- function(x)
 
 ##########PART TWO - MATCHING MUTUALISM SPECIFIC FUNCTION##########
 coev_div_single_gen <- function(meta_i, meta_j, pars){
+  
+  #####starting pop#####
   
   ptm <- proc.time()
   newgen_i <- list()
@@ -319,7 +324,7 @@ coev_div_single_gen <- function(meta_i, meta_j, pars){
   }
   proc.time()-ptm
 
-  #####abiotic sel#####
+  #####abiotic selection#####
   
   ptm <- proc.time()
   post_sel_i <- list()
