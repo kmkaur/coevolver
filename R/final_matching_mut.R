@@ -176,13 +176,13 @@ get_partners <- function(i,j){
 
 #costly interaction
 fitness_f_match_cost <- function(zeta, alpha, fit_diff){ 
-  w <- -zeta * exp(-alpha * fit_diff^2)
+  w <- -zeta * exp(-alpha * fit_diff^2) 
   out <- list(w)
 }
 
 #beneficial interaction
 fitness_f_match_ben <- function(zeta, alpha, fit_diff){ 
-  w <- zeta * exp(-alpha * fit_diff^2)
+  w <- zeta * exp(-alpha * fit_diff^2) 
   out <- list(w)
 }
 
@@ -191,38 +191,41 @@ fitness_f_match_ben <- function(zeta, alpha, fit_diff){
 
 #costly interaction
 fitness_f_diff_cost <- function(zeta, alpha, fit_diff){ 
-  w <- -zeta / (1 + alpha * fit_diff^2)
+  w <- -zeta / (1 + alpha * fit_diff^2) 
   out <- list(w)
 }
 
 #beneficial interaction
 fitness_f_diff_ben <- function(zeta, alpha, fit_diff){ 
-  w <- zeta / (1 + alpha * fit_diff^2)
+  w <- zeta / (1 + alpha * fit_diff^2) 
   out <- list(w)
 }
 
+###add remainders first is necessary####
+###then do abiotic selection####
+
+
 #####Function for abiotic selection#####
 ## Note: We ignore the possibility of local extinction
-abiotic_sel <- function(x, theta, gamma){ 
+abiotic_sel <- function(x, theta, gamma, wbio){
   w <- lapply(seq_len(length(x)), function(y)
-    fitness_f(x[[y]], theta[y], gamma))
+    fitness_f(x[[y]], theta[y], gamma, wbio[[y]][[y]][[y]])) 
   get_survivors(x, w)
 }
 
-
 #####Fitnesses function (quadratic stabilizing selection)#####
-fitness_f <- function(x, theta, gamma)
-  exp(-gamma * (x - theta)^2)
+fitness_f <- function(x, theta, gamma, wbio) 
+  (exp(-gamma * (x - theta)^2)) * (wbio)
 
-get_survivors <- function(x, w){
-  surv <- lapply(w, surv_id)
+get_survivors <- function(x, w){ 
+  surv <- lapply(w, surv_id) 
   lapply(seq_len(length(x)), function(y) {x[[y]][surv[[y]]]})
 }
-
 
 #####Function to get survivors#####
 surv_id <- function(x)
   which(x > runif(1))
+
 
 ##########PART TWO - MATCHING MUTUALISM SPECIFIC FUNCTION##########
 coev_div_single_gen <- function(meta_i, meta_j, pars){
