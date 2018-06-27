@@ -49,6 +49,7 @@ yoder_defaults <- function(){
        theta=theta, v_s=v_s)
 }
 
+#for practice simulation
 yoder_2_pop <- function(){
   N <- function() 2
   K <- function(n) runif(n, 300, 2000)
@@ -180,7 +181,10 @@ fitness_f_diff_ben <- function(zeta, alpha, fit_diff){
 }
 
 ###add remainders first is necessary####
-###then do abiotic selection####
+#remainders die in mutualisms and in 1 partner of antagonisms
+
+
+###then do abiotic selection, use biotic fitness####
 
 
 #####Function for abiotic selection#####
