@@ -572,15 +572,15 @@ coev_div_2 <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FAL
   #create empty matrices to store means and variances
   #columns=gen number and rows=pop number
   pop_meansi <- matrix(ncol=length(all_gens_i), nrow=pars$N)
-  #pop_vari <- matrix(ncol=length(all_gens_i), nrow=pars$N)
+  pop_vari <- matrix(ncol=length(all_gens_i), nrow=pars$N)
   pop_meansj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
-  #pop_varj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
+  pop_varj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
   
   #fill in matrices
   for(q in 1:length(all_gens_i)){
     for(r in 1:pars$N){
       pop_meansi[r,q] <- mean(all_gens_i[[q]][[r]])
-      #pop_vari[r,q] <- var(all_gens_i[[q]][[r]])
+      pop_vari[r,q] <- var(all_gens_i[[q]][[r]])
     }
   }
   
@@ -588,13 +588,13 @@ coev_div_2 <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FAL
   for(q in 1:length(all_gens_j)){
     for(r in 1:pars$N){
       pop_meansj[r,q] <- mean(all_gens_j[[q]][[r]])
-      #pop_varj[r,q] <- var(all_gens_j[[q]][[r]])
+      pop_varj[r,q] <- var(all_gens_j[[q]][[r]])
     }
   }
   
   #convert to data frames
-  #pop_vari <- as.data.frame(pop_vari) 
-  #pop_varj <- as.data.frame(pop_varj) 
+  pop_vari <- as.data.frame(pop_vari) 
+  pop_varj <- as.data.frame(pop_varj) 
   pop_meansi <- as.data.frame(pop_meansi)
   pop_meansj <- as.data.frame(pop_meansj)
   list(pars = pars, pop_means_i = pop_meansi, pop_means_j = pop_meansj )
