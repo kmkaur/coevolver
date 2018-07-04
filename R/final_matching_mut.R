@@ -358,10 +358,10 @@ coev_div <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE
     n.gen <- n.gen - burnin.gen
     
     #create empty matrices to store new selection values
-    alpha_i_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
-    alpha_j_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
-    gamma_i_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
-    gamma_j_burn <- matrix(ncol=burnin.gen, nrow=pars$N)
+    alpha_i_burn <- matrix(ncol = burnin.gen, nrow = pars$N)
+    alpha_j_burn <- matrix(ncol = burnin.gen, nrow = pars$N)
+    gamma_i_burn <- matrix(ncol = burnin.gen, nrow = pars$N)
+    gamma_j_burn <- matrix(ncol = burnin.gen, nrow = pars$N)
     
     #fill in matrices
     for (m in 1:pars$N){
