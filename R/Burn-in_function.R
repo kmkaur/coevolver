@@ -76,19 +76,6 @@ coev_div <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE
     pop_vari <- matrix(ncol=length(all_gens_i), nrow=pars$N)
     pop_meansj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
     pop_varj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
-    
-    pop_global_vari <- matrix(ncol =length(all_gens_i), nrow=1)
-    pop_global_varj <- matrix(ncol =length(all_gens_i), nrow=1)
-  
-    for(g in 1:length(all_gens_i)){
-      pooled_phenotypes_i <- unlist(all_gens_i[g])
-      pop_global_vari <- var(all_gens_i[g])
-    }
-    
-    for(g in 1:length(all_gens_j)){
-      pooled_phenotypes_j <- unlist(all_gens_j[g])
-      pop_global_varj <- var(all_gens_j[g])
-    }
 
     #fill in matrices
     for(q in 1:length(all_gens_i)){
@@ -111,13 +98,48 @@ coev_div <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE
     pop_varj <- as.data.frame(pop_varj) 
     pop_meansi <- as.data.frame(pop_meansi)
     pop_meansj <- as.data.frame(pop_meansj)
-    
-    pop_global_vari <- as.data.frame(pop_global_vari)
-    pop_global_varj <- as.data.frame(pop_global_varj)  
   
+    #create lists to store all individuals in each population
+    pop_global_i <- list()
+    pop_global_j <- list()
+    
+    #create lists for global variances of all populations in each generation
+    pop_global_i_var <- list()
+    pop_global_j_var <- list()
+    pop_global_i_mean <- list()
+    pop_global_j_mean <- list()
+    
+    #fill in the lists
+    for(g in 1:length(all_gens_i)){
+      pop_global_i_2 <- unlist(all_gens_i[[g]])
+      pop_global_i[[g]] <- pop_global_i_2 
+      pop_global_i_var2 <- var(pop_global_i[[g]])
+      pop_global_i_var[[g]] <- pop_global_i_var2
+      pop_global_i_mean2 <- mean(pop_global_i[[g]])
+      pop_global_i_mean[[g]] <- pop_global_i_mean2
+    }
+    
+    #fill in the lists
+    for(g in 1:length(all_gens_j)){
+      pop_global_j_2 <- unlist(all_gens_j[[g]])
+      pop_global_j[[g]] <- pop_global_j_2 
+      pop_global_j_var2 <- var(pop_global_j[[g]])
+      pop_global_j_var[[g]] <- pop_global_j_var2
+      pop_global_j_mean2 <- mean(pop_global_j[[g]])
+      pop_global_j_mean[[g]] <- pop_global_j_mean2
+    }
+    
+    #convert to data frames
+    pop_global_i_mean <- as.data.frame(pop_global_i_mean, col.names = 1:length(all_gens_i))
+    pop_global_j_mean <- as.data.frame(pop_global_j_mean, col.names = 1:length(all_gens_j))
+    pop_global_i_var <- as.data.frame(pop_global_i_var, col.names = 1:length(all_gens_i))
+    pop_global_j_var <- as.data.frame(pop_global_j_var, col.names = 1:length(all_gens_j))
+    
+    #final output includes this
     list(pars = pars,pop_var_i = pop_vari, pop_var_j = pop_varj,
          pop_means_i = pop_meansi, pop_means_j = pop_meansj, 
-         global_var_i = pop_global_vari,global_var_j = pop_global_varj)
+         global_var_i = pop_global_i_var, global_var_j = pop_global_j_var,
+         global_mean_i = pop_global_i_mean, global_mean_j = pop_global_j_mean)
 }
 
 #run it once ~ 12 mins
