@@ -71,11 +71,25 @@ coev_div <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE
     
     #create empty matrices to store means and variances
     #columns=gen number and rows=pop number
+    #this is variance of each one separately
     pop_meansi <- matrix(ncol=length(all_gens_i), nrow=pars$N)
     pop_vari <- matrix(ncol=length(all_gens_i), nrow=pars$N)
     pop_meansj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
     pop_varj <- matrix(ncol=length(all_gens_j), nrow=pars$N)
     
+    pop_global_vari <- matrix(ncol =length(all_gens_i), nrow=1)
+    pop_global_varj <- matrix(ncol =length(all_gens_i), nrow=1)
+  
+    for(g in 1:length(all_gens_i)){
+      pooled_phenotypes_i <- unlist(all_gens_i[g])
+      pop_global_vari <- var(all_gens_i[g])
+    }
+    
+    for(g in 1:length(all_gens_j)){
+      pooled_phenotypes_j <- unlist(all_gens_j[g])
+      pop_global_varj <- var(all_gens_j[g])
+    }
+
     #fill in matrices
     for(q in 1:length(all_gens_i)){
         for(r in 1:pars$N){
@@ -97,8 +111,13 @@ coev_div <- function(all_pars=NULL, n.gen, burnin=FALSE, burnin.gen, print=FALSE
     pop_varj <- as.data.frame(pop_varj) 
     pop_meansi <- as.data.frame(pop_meansi)
     pop_meansj <- as.data.frame(pop_meansj)
+    
+    pop_global_vari <- as.data.frame(pop_global_vari)
+    pop_global_varj <- as.data.frame(pop_global_varj)  
+  
     list(pars = pars,pop_var_i = pop_vari, pop_var_j = pop_varj,
-         pop_means_i = pop_meansi, pop_means_j = pop_meansj )
+         pop_means_i = pop_meansi, pop_means_j = pop_meansj, 
+         global_var_i = pop_global_vari,global_var_j = pop_global_varj)
 }
 
 #run it once ~ 12 mins
