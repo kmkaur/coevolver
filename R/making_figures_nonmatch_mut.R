@@ -3,23 +3,18 @@ library(ggplot2)
 library(cowplot)
 
 #making data structure work figure 4 eqiuvalent
-i_sim <- read.csv(file="solo_sim_i_nm.csv", row.names = 1)
-j_sim <- read.csv(file="solo_sim_j_nm.csv", row.names = 1)
-averages_i <- i_sim[101,]
-averages_i <- as.numeric(averages_i)
-averages_j <- j_sim[101,] 
-averages_j <- as.numeric(averages_j)
+i_sim <- read.csv(file="match comp i.csv", row.names = 1)
+j_sim <- read.csv(file="match comp j.csv", row.names = 1)
 generations <- 1:1000
-df_i <- data.frame(generations, averages_i)
-df_j <- data.frame(generations, averages_j)
-plot_i_nm <- ggplot(data=df_i, aes(x=generations, y=averages_i)) +
-  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype") + ggtitle("Non-Matching Mutualism Species i")
-plot_j_nm <- ggplot(data=df_i, aes(x=generations, y=averages_j)) +
-  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype") + ggtitle("Non-Matching Mutualism Species j")
-plot_grid(plot_i_nm, plot_j_nm)
+df_i <- data.frame(generations, i_sim$V1)
+df_j <- data.frame(generations, j_sim$V1)
+plot_i_nm <- ggplot(data=df_i, aes(x=generations, y=i_sim$V1)) +
+  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype") + ggtitle("Mean Non-Matching Mutualism Species i")
+plot_j_nm <- ggplot(data=df_j, aes(x=generations, y=j_sim$V1)) +
+  geom_point() + geom_line() + ylim(-2,2) + xlim(0, 1000) + xlab("Generations") + ylab("Mean Phenotype") + ggtitle("Mean Non-Matching Mutualism Species i")
 
 #making data structure work figure 3 eqiuvalent
-setwd("~/simulation_output/out_mut_nonmatch/out_n_m")
+setwd("~/simulation_output/out_mut_match/")
 list.filenames<-list.files(pattern=".rds")
 list.data.i<-list()
 list.data.j<-list()
@@ -32,6 +27,10 @@ for (i in 1:length(list.filenames)){
 for (i in 1:length(list.filenames)){
   list.data.j[[i]]<-readRDS(list.filenames[i])
 }
+
+
+
+
 
 #find mean end variance
 end_variances_i <- list()
