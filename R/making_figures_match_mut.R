@@ -43,16 +43,17 @@ for(i in 1:10){
 
 gb_plots_i <- ggplot()
 for (i in 1:10){
-  gb_plots_i <- gb_plots_i + geom_point(data=global_all_runs_i[[i]], aes(x,y), size = 0.5)
+  gb_plots_i <- gb_plots_i + geom_point(data=global_all_runs_i[[i]], aes(x,y), size = 0.5) + xlab("Time") + ylab("Global Variance 'i'")
 }
 gb_plots_i
 
 gb_plots_j <- ggplot()
 for (i in 1:10){
-  gb_plots_j <- gb_plots_j + geom_point(data=global_all_runs_j[[i]], aes(x,y), size = 0.5)
+  gb_plots_j <- gb_plots_j + geom_point(data=global_all_runs_j[[i]], aes(x,y), size = 0.5) + xlab("Time") + ylab("Global Variance 'j'")
 }
 gb_plots_j
 
+plot_grid(gb_plots_i, gb_plots_j)
 
 #global end variances, not by time
 global_end_var_i <- list()
@@ -72,9 +73,9 @@ for(i in 1:length(list.data)){
 global_end_var_i <- data.frame(unlist(global_end_var_i))
 global_end_var_j <- data.frame(unlist(global_end_var_j))
 mm_global_end_var_i <- qplot(global_end_var_i[,1], geom="histogram", binwidth = 0.02, 
-                      xlab = "Final Variance 'i'", ylab = "Simulations", xlim = c(-0.02,0.4))
+                      xlab = "Global Variance 'i'", ylab = "Simulations", xlim = c(-0.02,0.4))
 mm_global_end_var_j <- qplot(global_end_var_j[,1], geom="histogram", binwidth = 0.02, 
-                      xlab = "Final Variance 'j'", ylab = "Simulations", xlim = c(-0.02,0.4))
+                      xlab = "Global Variance 'j'", ylab = "Simulations", xlim = c(-0.02,0.4))
 plot_grid(mm_global_end_var_i, mm_global_end_var_j)
 
 glob_end_var <- cbind(global_end_var_i, global_end_var_j)
@@ -110,15 +111,17 @@ for(i in 1:10){
 
 plots_i <- ggplot()
 for (i in 1:10){
-  plots_i <- plots_i + geom_point(data=all_runs_i[[i]], aes(x,y), size = 0.5)
+  plots_i <- plots_i + geom_point(data=all_runs_i[[i]], aes(x,y), size = 0.5) +xlab("Generation") +ylab("Variance 'i'")
 }
 plots_i
 
 plots_j <- ggplot()
 for (i in 1:10){
-  plots_j <- plots_j + geom_point(data=all_runs_j[[i]], aes(x,y), size = 0.5)
+  plots_j <- plots_j + geom_point(data=all_runs_j[[i]], aes(x,y), size = 0.5) +xlab("Generation") +ylab("Variance 'j'")
 }
 plots_j
+
+plot_grid(plots_i, plots_j)
 
 #find mean end variance, not by time
 end_variances_i <- list()
@@ -138,9 +141,9 @@ for(i in 1:length(list.data)){
 end_var_i <- t(as.data.frame(end_variances_i))
 end_var_j <- t(as.data.frame(end_variances_j))
 var_i_fig_mm <- qplot(end_var_i[,1], geom="histogram", binwidth = 0.02, 
-           xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
+           xlab = "Final Variance 'i'", ylab = "Simulations", xlim = c(-0.02,0.4))
 var_j_fig_mm <- qplot(end_var_j[,1], geom="histogram", binwidth = 0.02, 
-                   xlab = "Final Variance", ylab = "Simulations", xlim = c(-0.02,0.4))
+                   xlab = "Final Variance 'j'", ylab = "Simulations", xlim = c(-0.02,0.4))
 plot_grid(var_i_fig_mm, var_j_fig_mm)
 
 end_var <- cbind(end_var_i, end_var_j)
@@ -176,15 +179,18 @@ for(i in 1:10){
 
 mgb_plots_i <- ggplot()
 for (i in 1:10){
-  mgb_plots_i <- mgb_plots_i + geom_point(data=mglobal_all_runs_i[[i]], aes(x,y), size = 0.5)
+  mgb_plots_i <- mgb_plots_i + geom_point(data=mglobal_all_runs_i[[i]], aes(x,y), size = 0.5) +xlab("Generation") +ylab("Global Mean 'i'")
 }
 mgb_plots_i
 
 mgb_plots_j <- ggplot()
 for (i in 1:10){
-  mgb_plots_j <- mgb_plots_j + geom_point(data=mglobal_all_runs_j[[i]], aes(x,y), size = 0.5)
+  mgb_plots_j <- mgb_plots_j + geom_point(data=mglobal_all_runs_j[[i]], aes(x,y), size = 0.5) +xlab("Generation") +ylab("Global Mean 'i'")
 }
 mgb_plots_j
+
+plot_grid(mgb_plots_i, mgb_plots_j)
+
 
 
 #global end means, not by time
@@ -205,9 +211,9 @@ for(i in 1:length(list.data)){
 global_end_mean_i <- data.frame(unlist(global_end_mean_i))
 global_end_mean_j <- data.frame(unlist(global_end_mean_j))
 mm_global_end_mean_i <- qplot(global_end_mean_i[,1], geom="histogram", binwidth = 0.02, 
-                             xlab = "Final Mean 'i'", ylab = "Simulations")
+                             xlab = "Global Mean 'i'", ylab = "Simulations")
 mm_global_end_mean_j <- qplot(global_end_mean_j[,1], geom="histogram", binwidth = 0.02, 
-                             xlab = "Final Mean 'j'", ylab = "Simulations")
+                             xlab = "Global Mean 'j'", ylab = "Simulations")
 plot_grid(mm_global_end_mean_i, mm_global_end_mean_j)
 
 glob_end_mean <- cbind(global_end_mean_i, global_end_mean_j)
@@ -243,15 +249,17 @@ for(i in 1:10){
 
 m_plots_i <- ggplot()
 for (i in 1:10){
-  m_plots_i <- m_plots_i + geom_point(data=mall_runs_i[[i]], aes(x,y), size = 0.5)
+  m_plots_i <- m_plots_i + geom_point(data=mall_runs_i[[i]], aes(x,y), size = 0.5) +xlab("Generation") +ylab("Mean 'i'")
 }
 m_plots_i
 
 m_plots_j <- ggplot()
 for (i in 1:10){
-  m_plots_j <- m_plots_j + geom_point(data=mall_runs_j[[i]], aes(x,y), size = 0.5)
+  m_plots_j <- m_plots_j + geom_point(data=mall_runs_j[[i]], aes(x,y), size = 0.5) +xlab("Generation") +ylab("Mean 'j'")
 }
 m_plots_j
+
+plot_grid(m_plots_i, m_plots_j)
 
 #find non global end mean, not by time
 end_means_i <- list()
@@ -271,9 +279,9 @@ for(i in 1:length(list.data)){
 end_means_i <- t(as.data.frame(end_means_i))
 end_means_j <- t(as.data.frame(end_means_j))
 mean_i_fig_mm <- qplot(end_means_i[,1], geom="histogram", binwidth = 0.02, 
-                      xlab = "Final Mean", ylab = "Simulations")
+                      xlab = "Final Mean 'i'", ylab = "Simulations")
 mean_j_fig_mm <- qplot(end_means_j[,1], geom="histogram", binwidth = 0.02, 
-                      xlab = "Final Mean", ylab = "Simulations")
+                      xlab = "Final Mean 'j'", ylab = "Simulations")
 plot_grid(mean_i_fig_mm, mean_j_fig_mm)
 
 end_means <- cbind(end_means_i, end_means_j)
